@@ -1,0 +1,17 @@
+@if (loading) {
+  <div class="report-state report-loading">
+    <div class="spinner"></div>
+    <p>Cargando reporte...</p>
+  </div>
+}
+
+@if (errorMsg && !loading) {
+  <div class="report-state report-error">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ errorMsg }}</p>
+  </div>
+}
+
+<div class="chart-wrapper" [style.visibility]="chartDataReady ? 'visible' : 'hidden'">
+  <canvas #chartCanvas></canvas>
+</div>
