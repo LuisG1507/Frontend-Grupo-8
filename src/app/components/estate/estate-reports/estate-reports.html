@@ -1,0 +1,29 @@
+<div class="chart-container">
+  <div class="chart-wrapper" [ngClass]="barChartType === 'doughnut' || barChartType === 'pie' ? 'chart-pie' : 'chart-bar'">
+    @if (isLoading) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Cargando reporte...</p>
+      </div>
+    }
+
+    @if (!isLoading && hasData) {
+      <canvas
+        baseChart
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [legend]="barChartLegend"
+        [type]="barChartType"
+      >
+      </canvas>
+    }
+
+    @if (!isLoading && !hasData) {
+      <div class="no-data">
+        <mat-icon class="no-data-icon">info_outline</mat-icon>
+        <p class="no-data-message">No hay datos disponibles para mostrar.</p>
+      </div>
+    }
+  </div>
+</div>

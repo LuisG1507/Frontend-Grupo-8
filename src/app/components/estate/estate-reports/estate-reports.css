@@ -1,0 +1,177 @@
+
+.chart-container {
+  width: 95%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+/* Título */
+.chart-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+}
+
+
+.report-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.btn-report {
+  padding: 0.5rem 1.2rem;
+  border: 2px solid #2d7fd3;
+  border-radius: 8px;
+  background: transparent;
+  color: #2d7fd3;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-report:hover,
+.btn-report.active {
+  background: #2d7fd3;
+  color: #fff;
+}
+
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.filter-input {
+  padding: 0.5rem 0.8rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  min-width: 180px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.filter-input:focus {
+  border-color: #2d7fd3;
+}
+
+
+.chart-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  overflow-x: auto;
+}
+
+
+.chart-wrapper canvas {
+  display: block;
+  margin: 0 auto;
+}
+
+
+.chart-bar canvas {
+  width: 100% !important;
+  max-width: 1000px !important;
+  height: 500px !important;
+}
+
+
+.chart-pie canvas {
+  max-width: 600px !important;
+  max-height: 600px !important;
+}
+
+
+.no-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem auto;
+  padding: 2rem;
+  max-width: 500px;
+  border: 2px dashed #d32f2f;
+  border-radius: 12px;
+  background: #fff5f5;
+}
+
+.no-data-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #d32f2f;
+}
+
+.no-data-message {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: #666;
+  text-align: center;
+}
+
+
+@media (max-width: 768px) {
+  .chart-container {
+    width: 98%;
+    padding: 1rem;
+  }
+
+  .chart-title {
+    font-size: 1.4rem;
+  }
+
+  .chart-bar canvas {
+    height: 350px !important;
+  }
+
+  .chart-pie canvas {
+    max-width: 350px !important;
+    max-height: 350px !important;
+  }
+}
+
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 220px;
+  padding: 32px;
+  border-radius: 12px;
+  text-align: center;
+  margin-bottom: 16px;
+  background: #f5f9ff;
+  color: #4a6a8a;
+  width: 100%;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid #e2edf7;
+  border-top-color: #2d7fd3;
+  border-radius: 50%;
+  animation: spin 0.85s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
