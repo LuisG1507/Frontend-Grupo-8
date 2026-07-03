@@ -53,7 +53,6 @@ export class EstateList implements OnInit, AfterViewInit {
   typeParam: string = '';
 
   searchTitleInput: string = '';
-
   distritos: string[] = [];
   todosLosDistritos: string[] = [];
   ciudades: string[] = [];
@@ -106,7 +105,9 @@ export class EstateList implements OnInit, AfterViewInit {
     if (this.ciudades.length === 0) {
       this.ciudades = [...new Set(data.map((e) => e.city).filter(Boolean))].sort();
       this.tipos = [...new Set(data.map((e) => e.type).filter(Boolean))].sort();
+
       this.todosLosDistritos = [...new Set(data.map((e) => e.district).filter(Boolean))].sort();
+
     }
     this.actualizarDistritos();
   }
