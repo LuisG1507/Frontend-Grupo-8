@@ -12,8 +12,22 @@
     }
   </header>
 
+  <div class="model-search-container">
+    <span class="search-label">Buscar por ID inmueble:</span>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
+      <mat-label>Ej. 12</mat-label>
+      <input matInput type="text" [(ngModel)]="searchEstateIdInput" placeholder="Ej. 12" (keyup.enter)="buscarPorEstateId()">
+    </mat-form-field>
+    
+    <button mat-flat-button color="primary" (click)="buscarPorEstateId()">
+      <mat-icon>search</mat-icon> Buscar
+    </button>
+    <button mat-stroked-button color="warn" (click)="limpiarFiltro()">
+      Limpiar
+    </button>
+  </div>
+
   <div class="entity-grid">
-    <!-- Cada tarjeta representa un registro Model3D recuperado desde Spring Boot. -->
     @for (element of dataSource.connect() | async; track element.idModels3D) {
       <mat-card class="entity-card">
         <mat-card-header>
@@ -30,7 +44,6 @@
           </dl>
         </mat-card-content>
 
-        <!-- Ver abre model-viewer; editar y eliminar mantienen el CRUD existente. -->
         <mat-card-actions align="end">
           <button
             mat-icon-button
@@ -63,6 +76,5 @@
     }
   </div>
 
-  <!-- El paginador controla cuantos modelos se muestran en la cuadricula. -->
   <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de modelos"></mat-paginator>
 </section>

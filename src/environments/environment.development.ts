@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  base: 'http://localhost:8080',
+  base: 'https://backend-grupo-8-tgl2.onrender.com',
   googleMapsApiKey: 'AIzaSyCTaPa4LcirpBl6GDUYedg1i1eo-DanKBo',
   firebase: {
     apiKey: 'AIzaSyDOJISgAGSZF5xAiLLqt8flRiiZ7LnrX9E',

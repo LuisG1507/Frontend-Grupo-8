@@ -10,12 +10,13 @@
         <h1>Inmuebles disponibles</h1>
       }
     </div>
+
     <div class="header-actions">
-      <!-- El mapa selecciona listMine o listAll segun el rol autenticado. -->
       <button mat-stroked-button routerLink="/estates/map">
         <mat-icon>map</mat-icon>
         Ver mapa
       </button>
+
       @if (isAdmin() || isArrendador()) {
         <button mat-flat-button color="primary" routerLink="/estates/register">
           <mat-icon>add</mat-icon>
@@ -25,47 +26,111 @@
     </div>
   </header>
 
-  <div class="entity-grid">
-    @for (element of dataSource.connect() | async; track element.idEstate) {
-      <mat-card class="entity-card">
-        <mat-card-header>
-          <mat-icon mat-card-avatar>apartment</mat-icon>
-          <mat-card-title>{{ element.title }}</mat-card-title>
-          <mat-card-subtitle>{{ element.district }}, {{ element.city }}</mat-card-subtitle>
-        </mat-card-header>
 
-        <mat-card-content>
-          <dl>
-            <div><dt>ID</dt><dd>{{ element.idEstate }}</dd></div>
-            <div><dt>Precio</dt><dd>{{ element.monthlyPrice }}</dd></div>
-            <div><dt>Tipo</dt><dd>{{ element.type }}</dd></div>
-            <div><dt>Estado</dt><dd>{{ element.state }}</dd></div>
-            <div><dt>ID usuario</dt><dd>{{ element.idUser?.idUser }}</dd></div>
-            @if (isArrendatario()) {
-              <div><dt>Arrendador</dt><dd>{{ element.ownerName }} {{ element.ownerLastName }}</dd></div>
-              <div><dt>Contacto</dt><dd>{{ element.ownerPhoneNumber }}</dd></div>
-            }
-          </dl>
-        </mat-card-content>
+    @if (isAdmin() || isArrendatario()) {
+      <div class="main-filter-bar">
+        <div class="main-filter-inputs">
+          <mat-icon class="main-filter-icon">tune</mat-icon>
+          <span class="main-filter-label">Filtros:</span>
+          
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="main-filter-field">
+            <mat-label>Ciudad</mat-label>
+            <mat-select [(ngModel)]="cityInput" (selectionChange)="onCityChange()">
+              @for (c of ciudades; track c) {
+                <mat-option [value]="c">{{ c }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
 
-        @if (isAdmin() || isArrendador()) {
-          <mat-card-actions align="end">
-            <button mat-icon-button color="primary" [routerLink]="['/estates/edit', element.idEstate]" aria-label="Editar inmueble">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="eliminar(element.idEstate)" aria-label="Eliminar inmueble">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </mat-card-actions>
-        }
-      </mat-card>
-    } @empty {
-      <mat-card class="empty-card">
-        <mat-icon>inbox</mat-icon>
-        <span>No hay inmuebles registrados.</span>
-      </mat-card>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="main-filter-field">
+            <mat-label>Distrito</mat-label>
+            <mat-select [(ngModel)]="districtInput" [disabled]="!cityInput">
+              @if (!cityInput) {
+                <mat-option disabled>Elige una ciudad primero</mat-option>
+              }
+              @for (d of distritos; track d) {
+                <mat-option [value]="d">{{ d }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="main-filter-field">
+            <mat-label>Tipo</mat-label>
+            <mat-select [(ngModel)]="typeInput">
+              @for (t of tipos; track t) {
+                <mat-option [value]="t">{{ t }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+        
+        <div class="main-filter-actions">
+          <button mat-stroked-button color="warn" (click)="limpiarFiltro()">
+            Limpiar
+          </button>
+          <button mat-flat-button color="primary" (click)="buscarFiltro()">
+            <mat-icon>search</mat-icon> Buscar
+          </button>
+        </div>
+      </div>
     }
-  </div>
 
-  <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de inmuebles"></mat-paginator>
+    <div class="main-filter-bar secondary-search-bar">
+      <div class="main-filter-inputs">
+        <mat-icon class="main-filter-icon">search</mat-icon>
+        <span class="main-filter-label">Búsqueda rápida:</span>
+        
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="main-filter-field search-field">
+          <mat-label>Nombre del inmueble</mat-label>
+          <input matInput type="text" [(ngModel)]="searchTitleInput" placeholder="Ej. Casa de playa..." (keyup.enter)="buscarPorNombre()">
+          <button matSuffix mat-icon-button aria-label="Buscar nombre" (click)="buscarPorNombre()">
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="entity-grid">
+      @for (element of dataSource.connect() | async; track element.idEstate) {
+        <mat-card class="entity-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>apartment</mat-icon>
+            <mat-card-title>{{ element.title }}</mat-card-title>
+            <mat-card-subtitle>{{ element.district }}, {{ element.city }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <dl>
+              <div><dt>ID</dt><dd>{{ element.idEstate }}</dd></div>
+              <div><dt>Precio</dt><dd>{{ element.monthlyPrice }}</dd></div>
+              <div><dt>Tipo</dt><dd>{{ element.type }}</dd></div>
+              <div><dt>Estado</dt><dd>{{ element.state }}</dd></div>
+              <div><dt>ID usuario</dt><dd>{{ element.idUser?.idUser }}</dd></div>
+              @if (isArrendatario()) {
+                <div><dt>Arrendador</dt><dd>{{ element.ownerName }} {{ element.ownerLastName }}</dd></div>
+                <div><dt>Contacto</dt><dd>{{ element.ownerPhoneNumber }}</dd></div>
+              }
+            </dl>
+          </mat-card-content>
+
+          @if (isAdmin() || isArrendador()) {
+            <mat-card-actions align="end">
+              <button mat-icon-button color="primary" [routerLink]="['/estates/edit', element.idEstate]" aria-label="Editar inmueble">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="eliminar(element.idEstate)" aria-label="Eliminar inmueble">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-card-actions>
+          }
+        </mat-card>
+      } @empty {
+        <mat-card class="empty-card">
+          <mat-icon>inbox</mat-icon>
+          <span>No hay inmuebles registrados.</span>
+        </mat-card>
+      }
+    </div>
+
+    <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de inmuebles"></mat-paginator>
 </section>

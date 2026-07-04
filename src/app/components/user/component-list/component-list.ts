@@ -10,14 +10,20 @@ import { RouterLink } from '@angular/router';
 import { User } from '../../../models/User';
 import { Userservice } from '../../../services/userservice';
 
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 @Component({
   selector: 'app-component-list',
-  imports: [AsyncPipe, MatCardModule, MatTableModule, MatPaginatorModule, DatePipe, MatButtonModule, MatIconModule, MatSnackBarModule, RouterLink],
+  imports: [AsyncPipe, MatCardModule, MatTableModule, MatPaginatorModule, DatePipe, MatButtonModule, MatIconModule, MatSnackBarModule, RouterLink, FormsModule, MatFormFieldModule, MatInputModule],
   templateUrl: './component-list.html',
   styleUrl: './component-list.css',
 })
 export class ComponentList implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<User> = new MatTableDataSource();
+  allUsers: User[] = [];
+  searchDniInput: string = '';
   displayedColumns: string[] = [
     'c0',
     'c1',
@@ -50,12 +56,34 @@ export class ComponentList implements OnInit, AfterViewInit {
 
   cargarUsuarios() {
     this.uS.list().subscribe((data) => {
+      this.allUsers = data;
       this.dataSource.data = data;
       if (this.paginator) {
         this.dataSource.paginator = this.paginator;
         this.paginator.firstPage();
       }
     });
+  }
+
+  buscarPorDni(): void {
+    if (!this.searchDniInput.trim()) {
+      this.cargarUsuarios();
+      return;
+    }
+    const termino = this.searchDniInput.trim();
+    const filtrados = this.allUsers.filter(u => u.dni && u.dni.toString().includes(termino));
+    this.dataSource.data = filtrados;
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+    if (filtrados.length === 0) {
+      this.snackBar.open('No hay usuarios con ese DNI', 'Cerrar', { duration: 3000 });
+    }
+  }
+
+  limpiarDni(): void {
+    this.searchDniInput = '';
+    this.cargarUsuarios();
   }
 
   eliminar(id: number) {

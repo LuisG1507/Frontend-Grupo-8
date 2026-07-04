@@ -10,6 +10,21 @@
     </button>
   </header>
 
+  <div class="user-search-container">
+    <span class="search-label">Buscar Usuario por DNI:</span>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
+      <mat-label>DNI del usuario</mat-label>
+      <input matInput type="text" [(ngModel)]="searchDniInput" placeholder="Ej. 12345678" (keyup.enter)="buscarPorDni()">
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" (click)="buscarPorDni()">
+      <mat-icon>search</mat-icon> Buscar
+    </button>
+    <button mat-stroked-button color="warn" (click)="limpiarDni()">
+      Limpiar
+    </button>
+  </div>
+
   <div class="entity-grid">
     @for (element of dataSource.connect() | async; track element.idUser) {
       <mat-card class="entity-card">
@@ -48,3 +63,4 @@
 
   <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de usuarios"></mat-paginator>
 </section>
+ 
