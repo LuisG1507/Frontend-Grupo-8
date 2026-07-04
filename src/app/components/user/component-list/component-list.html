@@ -10,19 +10,15 @@
     </button>
   </header>
 
-  <div class="main-filter-bar secondary-search-bar" style="margin-bottom: 2rem; margin-top: 1rem;">
-    <div class="main-filter-inputs">
-      <mat-icon class="main-filter-icon">search</mat-icon>
-      <span class="main-filter-label">Buscar usuario:</span>
-      
-      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="main-filter-field search-field">
-        <mat-label>DNI del usuario</mat-label>
-        <input matInput type="text" [(ngModel)]="searchDniInput" placeholder="Ej. 12345678" (keyup.enter)="buscarPorDni()">
-        <button matSuffix mat-icon-button aria-label="Buscar por DNI" (click)="buscarPorDni()">
-          <mat-icon>search</mat-icon>
-        </button>
-      </mat-form-field>
-    </div>
+  <div class="user-search-container">
+    <span class="search-label">Buscar Usuario por DNI:</span>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
+      <mat-label>DNI del usuario</mat-label>
+      <input matInput type="text" [(ngModel)]="searchDniInput" placeholder="Ej. 12345678" (keyup.enter)="buscarPorDni()">
+      <button matSuffix mat-icon-button aria-label="Buscar por DNI" (click)="buscarPorDni()">
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
   </div>
 
   <div class="entity-grid">
