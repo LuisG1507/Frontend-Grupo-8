@@ -10,48 +10,53 @@
     </button>
   </header>
 
-  <div class="favorite-grid">
-    @for (favorite of dataSource.connect() | async; track favorite.idFavorite) {
-      <mat-card class="favorite-card">
-        <mat-card-header>
-          <mat-icon mat-card-avatar>favorite</mat-icon>
-          <mat-card-title>{{ favorite.estate?.title || 'Inmueble sin titulo' }}</mat-card-title>
-          <mat-card-subtitle>Favorito #{{ favorite.idFavorite }}</mat-card-subtitle>
-        </mat-card-header>
+  @if (isLoading) {
+    <div class="spinner-container">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Cargando favoritos...</p>
+    </div>
+  } @else {
+    <div class="favorite-grid">
+      @for (favorite of dataSource.connect() | async; track favorite.idFavorite) {
+        <mat-card class="favorite-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>favorite</mat-icon>
+            <mat-card-title>{{ favorite.estate?.title || 'Inmueble sin titulo' }}</mat-card-title>
+            <mat-card-subtitle>Favorito #{{ favorite.idFavorite }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <dl>
+              <div>
+                <dt>Fecha</dt>
+                <dd>{{ favorite.creationDate | date: 'dd/MM/yyyy' }}</dd>
+              </div>
+              <div>
+                <dt>Usuario</dt>
+                <dd>{{ favorite.user?.username || ('ID ' + (favorite.user?.idUser || favorite.idUser)) }}</dd>
+              </div>
+              <div>
+                <dt>Inmueble</dt>
+                <dd>ID {{ favorite.estate?.idEstate || favorite.idEstate }}</dd>
+              </div>
+            </dl>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-icon-button color="primary" [routerLink]="['/favorites/edit', favorite.idFavorite]" aria-label="Editar favorito" [disabled]="isDeleting">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteFavorite(favorite.idFavorite)" aria-label="Eliminar favorito" [disabled]="isDeleting">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      } @empty {
+        <mat-card class="empty-card">
+          <mat-icon>favorite_border</mat-icon>
+          <span>No hay favoritos registrados.</span>
+        </mat-card>
+      }
+    </div>
 
-        <mat-card-content>
-          <dl>
-            <div>
-              <dt>Fecha</dt>
-              <dd>{{ favorite.creationDate | date: 'dd/MM/yyyy' }}</dd>
-            </div>
-            <div>
-              <dt>Usuario</dt>
-              <dd>{{ favorite.user?.username || ('ID ' + (favorite.user?.idUser || favorite.idUser)) }}</dd>
-            </div>
-            <div>
-              <dt>Inmueble</dt>
-              <dd>ID {{ favorite.estate?.idEstate || favorite.idEstate }}</dd>
-            </div>
-          </dl>
-        </mat-card-content>
-
-        <mat-card-actions align="end">
-          <button mat-icon-button color="primary" [routerLink]="['/favorites/edit', favorite.idFavorite]" aria-label="Editar favorito">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="deleteFavorite(favorite.idFavorite)" aria-label="Eliminar favorito">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    } @empty {
-      <mat-card class="empty-card">
-        <mat-icon>favorite_border</mat-icon>
-        <span>No hay favoritos registrados.</span>
-      </mat-card>
-    }
-  </div>
-
-  <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de favoritos"></mat-paginator>
+    <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de favoritos"></mat-paginator>
+  }
 </section>
