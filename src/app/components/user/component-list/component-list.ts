@@ -81,6 +81,11 @@ export class ComponentList implements OnInit, AfterViewInit {
     }
   }
 
+  limpiarDni(): void {
+    this.searchDniInput = '';
+    this.cargarUsuarios();
+  }
+
   eliminar(id: number) {
     this.uS.delete(id).subscribe(() => {
       this.snackBar.open('Usuario eliminado correctamente', 'Cerrar', { duration: 3000 });

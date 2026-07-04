@@ -15,10 +15,14 @@
     <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
       <mat-label>DNI del usuario</mat-label>
       <input matInput type="text" [(ngModel)]="searchDniInput" placeholder="Ej. 12345678" (keyup.enter)="buscarPorDni()">
-      <button matSuffix mat-icon-button aria-label="Buscar por DNI" (click)="buscarPorDni()">
-        <mat-icon>search</mat-icon>
-      </button>
     </mat-form-field>
+
+    <button mat-flat-button color="primary" (click)="buscarPorDni()">
+      <mat-icon>search</mat-icon> Buscar
+    </button>
+    <button mat-stroked-button color="warn" (click)="limpiarDni()">
+      Limpiar
+    </button>
   </div>
 
   <div class="entity-grid">
