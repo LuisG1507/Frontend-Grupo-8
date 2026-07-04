@@ -35,10 +35,6 @@ export class ContractList implements OnInit, AfterViewInit {
   isLoading: boolean = false;
   isDeleting: boolean = false;
 
-  // Setter: se ejecuta cada vez que el mat-paginator aparece en el DOM
-  // (incluso si @if/@else lo destruye y lo vuelve a crear al terminar
-  // la carga), asegurando que siempre quede correctamente enlazado
-  // al dataSource, sin importar el orden en que se dispare.
   @ViewChild(MatPaginator) set paginator(mp: MatPaginator) {
     if (mp) {
       this.dataSource.paginator = mp;
