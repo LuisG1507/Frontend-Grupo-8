@@ -1,5 +1,5 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -28,7 +28,7 @@ import { Userservice } from '../../../services/userservice';
   templateUrl: './component-list.html',
   styleUrl: './component-list.css',
 })
-export class ComponentList implements OnInit, AfterViewInit {
+export class ComponentList implements OnInit {
   dataSource: MatTableDataSource<User> = new MatTableDataSource();
   displayedColumns: string[] = [
     'c0', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8', 'c9', 'c10', 'c11', 'c12',
@@ -37,17 +37,21 @@ export class ComponentList implements OnInit, AfterViewInit {
   isLoading: boolean = false;
   isDeleting: boolean = false;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  // Setter: se ejecuta cada vez que el mat-paginator aparece en el DOM
+  // (incluso si @if lo destruye y lo vuelve a crear), asegurando que
+  // siempre quede correctamente enlazado al dataSource.
+  @ViewChild(MatPaginator) set paginator(mp: MatPaginator) {
+    if (mp) {
+      this.dataSource.paginator = mp;
+    }
+  }
 
   constructor(
     private uS: Userservice,
     private snackBar: MatSnackBar
   ) {}
 
-  ngOnInit(): void {}
-
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
+  ngOnInit(): void {
     this.cargarUsuarios();
   }
 
@@ -56,10 +60,6 @@ export class ComponentList implements OnInit, AfterViewInit {
     this.uS.list().subscribe({
       next: (data) => {
         this.dataSource.data = data;
-        if (this.paginator) {
-          this.dataSource.paginator = this.paginator;
-          this.paginator.firstPage();
-        }
         this.isLoading = false;
       },
       error: () => {
