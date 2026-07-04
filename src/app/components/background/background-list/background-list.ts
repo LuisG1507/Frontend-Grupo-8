@@ -9,16 +9,21 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
 import { Background } from '../../../models/Background';
 import { Backgroundservice } from '../../../services/backgroundservice';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { DataSource } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-background-list',
-  imports: [AsyncPipe, MatCardModule, MatTableModule, MatPaginatorModule, DatePipe, MatButtonModule, MatIconModule, MatSnackBarModule, RouterLink],
+  imports: [AsyncPipe, MatCardModule, MatTableModule, MatPaginatorModule, DatePipe, MatButtonModule, MatIconModule, MatSnackBarModule, RouterLink, MatInputModule, MatFormFieldModule],
   templateUrl: './background-list.html',
   styleUrl: './background-list.css',
 })
 export class BackgroundList implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<Background> = new MatTableDataSource();
   displayedColumns: string[] = ['c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8'];
+  datosF : any[] =[]
+  
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -50,4 +55,9 @@ export class BackgroundList implements OnInit, AfterViewInit {
       this.cargarAntecedentes();
     });
   }
+
+  filtrar(event: Event) {
+  const valorFiltro = (event.target as HTMLInputElement).value;
+  this.dataSource.filter = valorFiltro.trim().toLowerCase();
+}
 }
