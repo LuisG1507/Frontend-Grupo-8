@@ -26,6 +26,7 @@ import { LoginService } from '../../services/login-service';
 export class Authenticate {
   username: string = '';
   password: string = '';
+  hidePassword = true;
 
   constructor(
     private loginService: LoginService,

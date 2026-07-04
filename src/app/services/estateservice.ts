@@ -1,15 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import {
-  AboveAverageRentsDTO,
-  Estate,
-  EstateFilterDTO,
-  EstatePricePerRoomDTO,
-  EstatePriceRangeDTO,
-  EstateUsersDTO,
-  OwnerEstateDTO,
-} from '../models/Estate';
+import { Estate } from '../models/Estate';
+import { AboveAverageRentReportDTO } from '../models/reports/estate/above-average-rent-report-dto';
+import { DistrictEstateReportDTO } from '../models/reports/estate/district-estate-report-dto';
+import { OwnerEstateReportDTO } from '../models/reports/estate/owner-estate-report-dto';
+import { PricePerRoomReportDTO } from '../models/reports/estate/price-per-room-report-dto';
+import { PriceRangeReportDTO } from '../models/reports/estate/price-range-report-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -46,30 +43,27 @@ export class Estateservice {
     return this.http.delete(`${this.url}/${id}`, { responseType: 'text' });
   }
 
-
-  filtroEstate(ciudad: string, distrito: string, tipo: string) {
-    return this.http.get<EstateFilterDTO[]>(
-      `${this.url}/filtro/${ciudad}/${distrito}/${tipo}`
-    );
-  }
-
   ownersEstates() {
-    return this.http.get<OwnerEstateDTO[]>(`${this.url}/owners-estates`);
+    return this.http.get<OwnerEstateReportDTO[]>(`${this.url}/owners-estates`);
   }
 
   estatesByDistrict(district: string) {
-    return this.http.get<EstateUsersDTO[]>(`${this.url}/user-estate/${district}`);
+    return this.http.get<DistrictEstateReportDTO[]>(
+      `${this.url}/user-estate/${encodeURIComponent(district)}`
+    );
   }
 
   aboveAverageRents() {
-    return this.http.get<AboveAverageRentsDTO[]>(`${this.url}/AlquilerEncimaDelPromedio`);
+    return this.http.get<AboveAverageRentReportDTO[]>(
+      `${this.url}/AlquilerEncimaDelPromedio`
+    );
   }
 
   bestPricePerRoom() {
-    return this.http.get<EstatePricePerRoomDTO[]>(`${this.url}/best-price-per-room`);
+    return this.http.get<PricePerRoomReportDTO[]>(`${this.url}/best-price-per-room`);
   }
 
   priceRangeDistribution() {
-    return this.http.get<EstatePriceRangeDTO[]>(`${this.url}/price-range-distribution`);
+    return this.http.get<PriceRangeReportDTO[]>(`${this.url}/price-range-distribution`);
   }
 }

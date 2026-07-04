@@ -1,0 +1,22 @@
+<section class="chart-report">
+  <h2>Distribución por rango de precio</h2>
+  <p>Cantidad de inmuebles por tipo y rango de alquiler mensual.</p>
+
+  @if (hasData) {
+    <div class="chart-wrapper">
+      <canvas
+        baseChart
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [legend]="barChartLegend"
+        [type]="barChartType">
+      </canvas>
+    </div>
+  } @else {
+    <div class="no-data">
+      <mat-icon>info_outline</mat-icon>
+      <span>No hay inmuebles para distribuir por rango.</span>
+    </div>
+  }
+</section>

@@ -1,0 +1,22 @@
+<section class="chart-report">
+  <h2>Mejor precio por habitación</h2>
+  <p>Comparación del precio mensual dividido entre la cantidad de habitaciones.</p>
+
+  @if (hasData) {
+    <div class="chart-wrapper">
+      <canvas
+        baseChart
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [legend]="barChartLegend"
+        [type]="barChartType">
+      </canvas>
+    </div>
+  } @else {
+    <div class="no-data">
+      <mat-icon>info_outline</mat-icon>
+      <span>No hay inmuebles para calcular el precio por habitación.</span>
+    </div>
+  }
+</section>

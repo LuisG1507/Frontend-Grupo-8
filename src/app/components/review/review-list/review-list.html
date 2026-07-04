@@ -4,6 +4,7 @@
       <p>Resenas</p>
       <h1>{{ isArrendador() && !isAdmin() ? 'Resenas de mis inmuebles' : 'Lista de resenas' }}</h1>
     </div>
+
     @if (isAdmin() || !isArrendador()) {
       <button mat-flat-button color="primary" routerLink="/reviews/register">
         <mat-icon>add</mat-icon>

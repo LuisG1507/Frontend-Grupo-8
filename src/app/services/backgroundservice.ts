@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Background } from '../models/Background';
+import { BackgroundHighRiskDTO } from '../models/BackgroundHighRiskDTO';
+import { BackgroundTypeFrequencyDTO } from '../models/BackgroundTypeFrequencyDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +31,14 @@ export class Backgroundservice {
 
   delete(id: number) {
     return this.http.delete(`${this.url}/${id}`, { responseType: 'text' });
+  }
+
+  getTypeFrequency() {
+    return this.http.get<BackgroundTypeFrequencyDTO[]>(`${this.url}/frequency-type`);
+  }
+
+  getHighRiskUsers() {
+    return this.http.get<BackgroundHighRiskDTO[]>(`${this.url}/high-risk`);
   }
 
   private armarEnvio(background: Background) {

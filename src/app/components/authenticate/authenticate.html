@@ -1,30 +1,67 @@
 <section class="login-page">
-  <div class="login-panel">
-    <div class="login-brand">
-      <mat-icon>home_work</mat-icon>
-      <div>
-        <span>SmartRent</span>
-        <h1>Iniciar sesion</h1>
+  <div class="login-shell">
+    <header class="login-brand">
+      <img
+        class="brand-logo"
+        src="/logo-smartrent.png"
+        alt="SmartRent">
+    </header>
+
+    <div class="login-panel">
+      <div class="login-copy">
+        <h1>Iniciar sesión</h1>
+        <p>Accede a tu cuenta para continuar gestionando tus inmuebles y operaciones.</p>
       </div>
+
+      <form #loginForm="ngForm" (ngSubmit)="login()">
+        <mat-form-field appearance="outline">
+          <mat-label>Usuario</mat-label>
+          <mat-icon matPrefix>person_outline</mat-icon>
+          <input
+            matInput
+            name="username"
+            [(ngModel)]="username"
+            autocomplete="username"
+            required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <mat-icon matPrefix>lock_outline</mat-icon>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            name="password"
+            [(ngModel)]="password"
+            autocomplete="current-password"
+            required>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            [attr.aria-label]="hidePassword ? 'Mostrar contraseña' : 'Ocultar contraseña'"
+            [title]="hidePassword ? 'Mostrar contraseña' : 'Ocultar contraseña'"
+            (click)="hidePassword = !hidePassword">
+            <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <button
+          class="login-submit"
+          mat-flat-button
+          color="primary"
+          type="submit"
+          [disabled]="loginForm.invalid">
+          Iniciar sesión
+        </button>
+      </form>
     </div>
 
-    <form #loginForm="ngForm" (ngSubmit)="login()">
-      <mat-form-field appearance="outline">
-        <mat-label>Usuario</mat-label>
-        <input matInput name="username" [(ngModel)]="username" required />
-      </mat-form-field>
+    <p class="register-copy">
+      ¿No tienes cuenta?
+      <a routerLink="/register">Regístrate</a>
+    </p>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Contraseña</mat-label>
-        <input matInput type="password" name="password" [(ngModel)]="password" required />
-      </mat-form-field>
-
-      <button mat-flat-button color="primary" type="submit" [disabled]="loginForm.invalid">
-        <mat-icon>login</mat-icon>
-        Ingresar
-      </button>
-
-      <a mat-button routerLink="/register">Crear una cuenta</a>
-    </form>
+    <footer>©2026 SmartRent. Grupito 8, arqui web <3.</footer>
   </div>
 </section>

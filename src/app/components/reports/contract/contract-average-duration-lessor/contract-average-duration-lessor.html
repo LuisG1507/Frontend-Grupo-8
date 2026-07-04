@@ -1,0 +1,23 @@
+<section class="card-list-page">
+  <header class="list-header">
+    <div>
+      <p>Contratos</p>
+      <h1>Duracion promedio por arrendador</h1>
+    </div>
+  </header>
+
+  @if (arrendadores.length > 0) {
+    <mat-card class="chart-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>bar_chart</mat-icon>
+        <mat-card-title>Comparativa de duracion de contratos</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="chart-container">
+          <canvas baseChart [data]="chartData" [options]="chartOptions" type="bar"></canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+
+</section>

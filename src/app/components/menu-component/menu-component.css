@@ -1,6 +1,16 @@
+:host {
+  min-height: calc(100vh - 72px);
+  display: block;
+  padding: 30px 0 44px;
+  box-sizing: border-box;
+  background:
+    linear-gradient(rgba(245, 247, 251, 0.78), rgba(245, 247, 251, 0.92)),
+    url('/tokyo-menu-background.jpg') center/cover fixed;
+}
+
 .menu-home {
   width: min(1120px, calc(100% - 40px));
-  margin: 30px auto 44px;
+  margin: 0 auto;
 }
 
 .home-hero {
@@ -12,9 +22,7 @@
   gap: 28px;
   border-radius: 8px;
   border: 1px solid #d6e7f6;
-  background:
-    linear-gradient(120deg, rgba(16, 32, 51, 0.88), rgba(45, 127, 211, 0.78)),
-    url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1400&q=80') center/cover;
+  background: linear-gradient(120deg, rgba(16, 32, 51, 0.92), rgba(45, 127, 211, 0.84));
   color: #ffffff;
   box-shadow: 0 16px 36px rgba(16, 32, 51, 0.18);
 }
@@ -71,6 +79,7 @@
   justify-content: center;
   border: 1px solid #d6e7f6;
   border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 10px 24px rgba(45, 127, 211, 0.1);
   cursor: pointer;
   transition: transform 160ms ease, box-shadow 160ms ease;
@@ -88,27 +97,11 @@
   color: #2d7fd3;
 }
 
-.media-placeholder {
-  min-height: 150px;
-  margin-top: 22px;
-  display: grid;
-  place-items: center;
-  gap: 8px;
-  border: 1px dashed #a9c9e7;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #6a7b8d;
-  text-align: center;
-}
-
-.media-placeholder mat-icon {
-  width: 42px;
-  height: 42px;
-  font-size: 42px;
-  color: #2d7fd3;
-}
-
 @media (max-width: 840px) {
+  :host {
+    background-attachment: scroll;
+  }
+
   .home-hero {
     align-items: flex-start;
     flex-direction: column;

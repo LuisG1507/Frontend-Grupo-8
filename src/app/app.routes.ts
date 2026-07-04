@@ -41,6 +41,7 @@ import { Model3dUpdate } from './components/model3d/model3d-update/model3d-updat
 import { Model3dView } from './components/model3d/model3d-view/model3d-view';
 import { Authenticate } from './components/authenticate/authenticate';
 import { seguridadGuard } from './guard/seguridad-guard';
+import { Reportes } from './components/reports/reports';
 
 export const routes: Routes = [
   {
@@ -55,6 +56,11 @@ export const routes: Routes = [
   {
     path: 'register',
     component: UserRegister,
+  },
+  {
+    path: 'reports',
+    component: Reportes,
+    canActivate: [seguridadGuard],
   },
   {
     path: 'users',

@@ -1,0 +1,45 @@
+<section class="card-list-page">
+  <header class="list-header">
+    <div>
+      <p>Contratos</p>
+      <h1>Contratos por vencer</h1>
+    </div>
+  </header>
+
+  @if (contratos.length > 0) {
+    <mat-card class="chart-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>bar_chart</mat-icon>
+        <mat-card-title>Dias restantes por contrato</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="chart-container">
+          <canvas baseChart [data]="chartData" [options]="chartOptions" type="bar"></canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <div class="entity-grid">
+    @for (element of contratos; track element.estateTitle + element.endDate) {
+      <mat-card class="entity-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>event_busy</mat-icon>
+          <mat-card-title>{{ element.estateTitle }}</mat-card-title>
+          <mat-card-subtitle>{{ element.name }} {{ element.lastName }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <dl>
+            <div><dt>Fecha fin</dt><dd>{{ element.endDate | date:'dd/MM/yyyy HH:mm' }}</dd></div>
+            <div><dt>Dias restantes</dt><dd>{{ element.daysRemaining }}</dd></div>
+          </dl>
+        </mat-card-content>
+      </mat-card>
+    } @empty {
+      <mat-card class="empty-card">
+        <mat-icon>inbox</mat-icon>
+        <span>No hay contratos por vencer.</span>
+      </mat-card>
+    }
+  </div>
+</section>

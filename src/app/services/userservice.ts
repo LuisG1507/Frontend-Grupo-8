@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { User } from '../models/User';
+import { UserUnverifiedBackgroundDTO } from '../models/UserUnverifiedBackgroundDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,12 @@ export class Userservice {
 
   delete(id: number) {
     return this.http.delete(`${this.url}/${id}`, { responseType: 'text' });
+  }
+
+  getUnverifiedWithBackgrounds() {
+    return this.http.get<UserUnverifiedBackgroundDTO[]>(
+      `${this.url}/unverified-with-backgrounds`
+    );
   }
 
 }

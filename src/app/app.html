@@ -7,7 +7,7 @@
         </div>
         <div>
           <p class="brand-kicker">SmartRent</p>
-          <h1>Grupo ochito</h1>
+          <h1>Menu principal</h1>
         </div>
       </div>
 
@@ -16,6 +16,13 @@
           <mat-icon matListItemIcon>dashboard</mat-icon>
           <span matListItemTitle>Menu</span>
         </a>
+
+        @if (isAdmin() || isArrendador() || isArrendatario()) {
+          <a mat-list-item routerLink="/reports" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>bar_chart</mat-icon>
+            <span matListItemTitle>Reportes</span>
+          </a>
+        }
 
         @if (isAdmin()) {
           <a mat-list-item routerLink="/users/list" routerLinkActive="active-link">
