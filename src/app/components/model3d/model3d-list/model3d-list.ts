@@ -47,7 +47,6 @@ export class Model3dList implements OnInit, AfterViewInit {
     this.cargarModelos();
   }
 
-  /** El arrendador consulta sus modelos; los otros roles consultan la lista general. */
   cargarModelos() {
     const consulta = this.isArrendador() && !this.isAdmin()
       ? this.mS.listMine()
@@ -96,7 +95,6 @@ export class Model3dList implements OnInit, AfterViewInit {
     this.cargarModelos();
   }
 
-  /** Elimina primero el GLB remoto y luego su registro relacional. */
   async eliminar(model: Model3d): Promise<void> {
     if (!window.confirm(`¿Eliminar el modelo #${model.idModels3D}?`)) {
       return;
