@@ -2,9 +2,7 @@
   <header class="list-header">
     <div>
       <p>Gestión de inmuebles</p>
-      @if (reporteSeleccionado) {
-        <h1>{{ getReportLabel() }}</h1>
-      } @else if (isAdmin()) {
+      @if (isAdmin()) {
         <h1>Todos los inmuebles</h1>
       } @else if (isArrendador()) {
         <h1>Mis inmuebles</h1>
@@ -14,58 +12,10 @@
     </div>
 
     <div class="header-actions">
-
-      @if (isAdmin() || isArrendatario()) {
-        <button mat-stroked-button [matMenuTriggerFor]="reportMenu" class="report-btn"
-                [class.report-btn--active]="!!reporteSeleccionado"
-                aria-label="Seleccionar reporte">
-          <span class="report-btn-content">
-            <mat-icon>bar_chart</mat-icon>
-            <span class="report-btn-label">{{ reporteSeleccionado ? getReportLabel() : 'Reportes' }}</span>
-            <mat-icon class="chevron-icon">expand_more</mat-icon>
-          </span>
-        </button>
-
-        <mat-menu #reportMenu="matMenu" class="report-menu">
-         
-          <button mat-menu-item (click)="selectReport('owners-estates')" class="report-menu-item">
-            <mat-icon>people</mat-icon>
-            <span>Propietarios y sus inmuebles</span>
-          </button>
-          <button mat-menu-item (click)="selectReport('above-average')" class="report-menu-item">
-            <mat-icon>trending_up</mat-icon>
-            <span>Alquileres encima del promedio</span>
-          </button>
-          <button mat-menu-item (click)="selectReport('best-price-per-room')" class="report-menu-item">
-            <mat-icon>bed</mat-icon>
-            <span>Mejor precio por habitación</span>
-          </button>
-          <button mat-menu-item (click)="selectReport('by-district')" class="report-menu-item">
-            <mat-icon>domain</mat-icon>
-            <span>Inmuebles por distrito</span>
-          </button>
-          @if (isAdmin()) {
-            <button mat-menu-item (click)="selectReport('price-range')" class="report-menu-item">
-              <mat-icon>donut_large</mat-icon>
-              <span>Distribución por rango de precio</span>
-            </button>
-          }
-        </mat-menu>
-      }
-
-      @if (reporteSeleccionado) {
-        <button mat-stroked-button (click)="cerrarReporte()" aria-label="Volver a la lista">
-          <mat-icon>arrow_back</mat-icon>
-          Lista
-        </button>
-      }
-
-      @if (!reporteSeleccionado) {
-        <button mat-stroked-button routerLink="/estates/map">
-          <mat-icon>map</mat-icon>
-          Ver mapa
-        </button>
-      }
+      <button mat-stroked-button routerLink="/estates/map">
+        <mat-icon>map</mat-icon>
+        Ver mapa
+      </button>
 
       @if (isAdmin() || isArrendador()) {
         <button mat-flat-button color="primary" routerLink="/estates/register">
@@ -73,48 +23,10 @@
           Registrar inmueble
         </button>
       }
-
     </div>
   </header>
 
-  @if (reporteSeleccionado === 'by-district') {
-    <div class="filter-bar">
-      <mat-icon class="filter-bar-icon">location_on</mat-icon>
-      <span class="filter-bar-label">Selecciona un distrito:</span>
-      
-      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="district-select-field">
-        <mat-label>Distrito</mat-label>
-        <mat-select
-          [(ngModel)]="districtInput"
-          (selectionChange)="onDistrictChange()"
-        >
 
-          @for (d of todosLosDistritos; track d) {
-
-            <mat-option [value]="d">{{ d }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    </div>
-  }
-
-  @if (reporteSeleccionado && (reporteSeleccionado !== 'by-district' || districtParam)) {
-    <div class="report-panel">
-      <app-estate-reports
-        [reportKey]="reporteSeleccionado"
-        [districtParam]="districtParam"
-      ></app-estate-reports>
-    </div>
-  }
-
-  @if (reporteSeleccionado === 'by-district' && !districtParam) {
-    <div class="district-prompt">
-      <mat-icon class="prompt-icon">location_city</mat-icon>
-      <p><strong>Selecciona un distrito</strong> arriba para generar el reporte de inmuebles.</p>
-    </div>
-  }
-
-  @if (!reporteSeleccionado) {
     @if (isAdmin() || isArrendatario()) {
       <div class="main-filter-bar">
         <div class="main-filter-inputs">
@@ -221,5 +133,4 @@
     </div>
 
     <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de inmuebles"></mat-paginator>
-  }
 </section>

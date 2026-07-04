@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Estate } from '../models/Estate';
+import { Estate, EstateFilterDTO } from '../models/Estate';
 import { AboveAverageRentReportDTO } from '../models/reports/estate/above-average-rent-report-dto';
 import { DistrictEstateReportDTO } from '../models/reports/estate/district-estate-report-dto';
 import { OwnerEstateReportDTO } from '../models/reports/estate/owner-estate-report-dto';
@@ -65,5 +65,11 @@ export class Estateservice {
 
   priceRangeDistribution() {
     return this.http.get<PriceRangeReportDTO[]>(`${this.url}/price-range-distribution`);
+  }
+
+  filtroEstate(city: string, district: string, type: string) {
+    return this.http.get<EstateFilterDTO[]>(
+      `${this.url}/filtro/${encodeURIComponent(city)}/${encodeURIComponent(district)}/${encodeURIComponent(type)}`
+    );
   }
 }

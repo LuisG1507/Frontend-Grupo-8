@@ -17,7 +17,6 @@ import { EstateList } from './components/estate/estate-list/estate-list';
 import { EstateMap } from './components/estate/estate-map/estate-map';
 import { EstateRegister } from './components/estate/estate-register/estate-register';
 import { EstateUpdate } from './components/estate/estate-update/estate-update';
-import { EstateReports } from './components/estate/estate-reports/estate-reports';
 import { Contract } from './components/contract/contract';
 import { ContractList } from './components/contract/contract-list/contract-list';
 import { ContractRegister } from './components/contract/contract-register/contract-register';
@@ -106,7 +105,6 @@ export const routes: Routes = [
       { path: 'map', component: EstateMap },
       { path: 'register', component: EstateRegister },
       { path: 'edit/:id', component: EstateUpdate },
-      { path: 'reports', component: EstateReports },
     ],
   },
   {
