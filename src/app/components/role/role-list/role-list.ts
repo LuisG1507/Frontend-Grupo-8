@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -27,24 +27,28 @@ import { Roleservice } from '../../../services/roleservice';
   templateUrl: './role-list.html',
   styleUrl: './role-list.css',
 })
-export class RoleList implements OnInit, AfterViewInit {
+export class RoleList implements OnInit {
   dataSource: MatTableDataSource<Role> = new MatTableDataSource();
   displayedColumns: string[] = ['c1', 'c2', 'c3', 'c4', 'c5'];
 
   isLoading: boolean = false;
   isDeleting: boolean = false;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  // Setter: se ejecuta cada vez que el mat-paginator aparece en el DOM
+  // (incluso si @if lo destruye y lo vuelve a crear), asegurando que
+  // siempre quede correctamente enlazado al dataSource.
+  @ViewChild(MatPaginator) set paginator(mp: MatPaginator) {
+    if (mp) {
+      this.dataSource.paginator = mp;
+    }
+  }
 
   constructor(
     private rS: Roleservice,
     private snackBar: MatSnackBar
   ) {}
 
-  ngOnInit(): void {}
-
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
+  ngOnInit(): void {
     this.cargarRoles();
   }
 
@@ -53,10 +57,6 @@ export class RoleList implements OnInit, AfterViewInit {
     this.rS.list().subscribe({
       next: (data) => {
         this.dataSource.data = data;
-        if (this.paginator) {
-          this.dataSource.paginator = this.paginator;
-          this.paginator.firstPage();
-        }
         this.isLoading = false;
       },
       error: () => {
