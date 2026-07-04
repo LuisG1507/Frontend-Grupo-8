@@ -1,0 +1,22 @@
+<section class="chart-report">
+  <h2>Propietarios con inmuebles amplios</h2>
+  <p>Precio mensual de inmuebles que tienen tres o más habitaciones.</p>
+
+  @if (hasData) {
+    <div class="chart-wrapper">
+      <canvas
+        baseChart
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [legend]="barChartLegend"
+        [type]="barChartType">
+      </canvas>
+    </div>
+  } @else {
+    <div class="no-data">
+      <mat-icon>info_outline</mat-icon>
+      <span>No hay inmuebles con tres o más habitaciones.</span>
+    </div>
+  }
+</section>

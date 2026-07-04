@@ -1,0 +1,106 @@
+@if (verificar()) {
+  <mat-sidenav-container class="app-shell">
+    <mat-sidenav class="sidebar" mode="side" opened fixedInViewport>
+      <div class="brand-block">
+        <div class="brand-mark">
+          <mat-icon>home_work</mat-icon>
+        </div>
+        <div>
+          <p class="brand-kicker">SmartRent</p>
+          <h1>Menu principal</h1>
+        </div>
+      </div>
+
+      <mat-nav-list class="side-nav">
+        <a mat-list-item routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+          <mat-icon matListItemIcon>dashboard</mat-icon>
+          <span matListItemTitle>Menu</span>
+        </a>
+
+        @if (isAdmin() || isArrendador() || isArrendatario()) {
+          <a mat-list-item routerLink="/reports" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>bar_chart</mat-icon>
+            <span matListItemTitle>Reportes</span>
+          </a>
+        }
+
+        @if (isAdmin()) {
+          <a mat-list-item routerLink="/users/list" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>group</mat-icon>
+            <span matListItemTitle>Usuarios</span>
+          </a>
+          <a mat-list-item routerLink="/roles/list" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>admin_panel_settings</mat-icon>
+            <span matListItemTitle>Roles</span>
+          </a>
+        }
+
+        @if (isAdmin() || isArrendador() || isArrendatario()) {
+          <a mat-list-item routerLink="/backgrounds/list" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>badge</mat-icon>
+            <span matListItemTitle>Antecedentes</span>
+          </a>
+          <a mat-list-item routerLink="/estates/list" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>apartment</mat-icon>
+            <span matListItemTitle>Inmuebles</span>
+          </a>
+        }
+
+        @if (isAdmin()) {
+          <a mat-list-item routerLink="/favorites/list" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>favorite</mat-icon>
+            <span matListItemTitle>Favoritos</span>
+          </a>
+          <a mat-list-item routerLink="/contracts/list" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>description</mat-icon>
+            <span matListItemTitle>Contratos</span>
+          </a>
+        }
+
+        @if (isAdmin() || isArrendador() || isArrendatario()) {
+          <a mat-list-item routerLink="/reviews/list" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>star</mat-icon>
+            <span matListItemTitle>Resenas</span>
+          </a>
+          <a mat-list-item routerLink="/risk-reports/list" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>report</mat-icon>
+            <span matListItemTitle>Riesgos</span>
+          </a>
+        }
+
+        @if (isAdmin() || isArrendador() || isArrendatario()) {
+          <a mat-list-item routerLink="/models3d/list" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>view_in_ar</mat-icon>
+            <span matListItemTitle>Modelos 3D</span>
+          </a>
+        }
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="main-shell">
+      <mat-toolbar class="topbar">
+        <div>
+          <span class="topbar-label">Sistema de gestion</span>
+          <strong>SmartRent</strong>
+        </div>
+
+        <div class="topbar-actions">
+          <div class="account-copy">
+            <span>{{ usuario }}</span>
+            <strong>{{ role }}</strong>
+          </div>
+          <button mat-icon-button type="button" aria-label="Cerrar sesion" title="Cerrar sesion" (click)="cerrar()">
+            <mat-icon>logout</mat-icon>
+          </button>
+        </div>
+      </mat-toolbar>
+
+      <main class="content-area">
+        <router-outlet></router-outlet>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+} @else {
+  <router-outlet></router-outlet>
+}
+ 

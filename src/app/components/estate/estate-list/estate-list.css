@@ -1,0 +1,243 @@
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.report-btn {
+  max-width: 260px !important;
+  overflow: hidden !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+.report-btn-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  width: 100%;
+}
+
+::ng-deep .report-btn .mdc-button__label {
+  min-width: 0;
+  width: 100%;
+}
+
+.report-btn-content mat-icon {
+  flex-shrink: 0;
+}
+
+.report-btn-label {
+  flex: 1 1 auto;
+  min-width: 0;        
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.report-btn--active {
+  border-color: #2d7fd3 !important;
+  color: #2d7fd3 !important;
+}
+
+.chevron-icon {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  flex-shrink: 0;      
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  margin: 16px 0 0;
+  background: #f0f6ff;
+  border: 1px solid #c8dff5;
+  border-radius: 10px;
+}
+
+.filter-bar-icon {
+  color: #2d7fd3;
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+  flex-shrink: 0;
+}
+
+.filter-bar-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #2d3e50;
+  white-space: nowrap;
+}
+
+.main-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.main-filter-bar.secondary-search-bar {
+  margin-top: -12px; 
+  background-color: #ffffff;
+  border: 1px dashed #cbd5e1;
+}
+
+.search-field {
+  min-width: 200px !important;
+  max-width: 280px !important;
+}
+
+.main-filter-inputs {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.main-filter-icon {
+  color: #2d7fd3;
+  margin-right: 4px;
+}
+
+.main-filter-label {
+  font-weight: 600;
+  color: #1e293b;
+  margin-right: 12px;
+}
+
+.main-filter-field {
+  min-width: 140px;
+  max-width: 220px;
+  flex: 1;
+}
+
+::ng-deep .main-filter-field .mat-mdc-text-field-wrapper {
+  background-color: #ffffff;
+  height: 44px !important;
+  padding-bottom: 0 !important;
+}
+
+::ng-deep .main-filter-field .mat-mdc-form-field-flex {
+  height: 44px !important;
+  align-items: center !important;
+}
+
+::ng-deep .main-filter-field .mat-mdc-form-field-infix {
+  padding: 0 !important;
+  min-height: auto !important;
+  display: flex;
+  align-items: center;
+}
+
+/* Centrar el contenido y el label */
+::ng-deep .main-filter-field .mat-mdc-select,
+::ng-deep .main-filter-field .mat-mdc-select-trigger,
+::ng-deep .main-filter-field .mat-mdc-select-value {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+::ng-deep .main-filter-field .mdc-floating-label:not(.mdc-floating-label--float-above) {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+.main-filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.district-select-field {
+  min-width: 200px;
+  max-width: 280px;
+}
+
+.report-panel {
+  margin-top: 28px;
+  padding: 32px 28px 28px;
+  background: #ffffff;
+  border: 1px solid #dde6ee;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(16, 32, 51, 0.07);
+  animation: fadeSlideIn 0.28s ease;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.district-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 220px;
+  margin-top: 28px;
+  padding: 40px;
+  background: linear-gradient(135deg, #f0f6ff 0%, #e8f0fe 100%);
+  border: 1px dashed #b3cce8;
+  border-radius: 14px;
+  color: #4a6a8a;
+  text-align: center;
+  animation: fadeSlideIn 0.25s ease;
+}
+
+.prompt-icon {
+  font-size: 54px !important;
+  width: 54px !important;
+  height: 54px !important;
+  color: #2d7fd3;
+  opacity: 0.6;
+}
+
+@media (max-width: 700px) {
+  .header-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .report-btn {
+    max-width: 100%;
+  }
+
+  .report-btn-label {
+    max-width: unset;
+  }
+
+  .filter-bar {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .district-select-field {
+    width: 100%;
+    max-width: unset;
+  }
+
+  .report-panel {
+    padding: 20px 14px;
+  }
+}

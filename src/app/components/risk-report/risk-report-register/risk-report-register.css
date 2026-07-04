@@ -1,0 +1,13 @@
+.mensaje-abajo {
+  position: absolute;
+  bottom: -22px; 
+  left: 16px;  
+  font-size: 12px;
+  line-height: 14px;
+  z-index: 5;
+}
+
+mat-form-field {
+  margin-bottom: 24px;
+  display: block;
+}

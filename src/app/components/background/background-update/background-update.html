@@ -1,0 +1,44 @@
+<h1>Actualizar antecedente</h1>
+
+<form #backgroundForm="ngForm" (ngSubmit)="aceptar()">
+  <mat-form-field appearance="outline">
+    <mat-label>Tipo</mat-label>
+    <input matInput name="type" [(ngModel)]="background.type" required minlength="3" maxlength="50" />
+    <mat-error>El tipo debe contener entre 3 y 50 caracteres.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Descripción</mat-label>
+    <textarea matInput name="description" [(ngModel)]="background.description"
+              required minlength="10" maxlength="200"></textarea>
+    <mat-error>La descripción debe contener entre 10 y 200 caracteres.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Fuente</mat-label>
+    <input matInput name="source" [(ngModel)]="background.source" required minlength="3" maxlength="50" />
+    <mat-error>La fuente debe contener entre 3 y 50 caracteres.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Fecha de registro</mat-label>
+    <input matInput [matDatepicker]="registrationPicker" name="registrationDate"
+           [(ngModel)]="background.registrationDate" required [max]="today" />
+    <mat-datepicker-toggle matIconSuffix [for]="registrationPicker"></mat-datepicker-toggle>
+    <mat-datepicker #registrationPicker></mat-datepicker>
+    <mat-error>Seleccione una fecha que no esté en el futuro.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>ID usuario</mat-label>
+    <input matInput type="number" name="idUser" [(ngModel)]="background.idUser" required min="1" />
+    <mat-error>Ingrese un ID de usuario válido.</mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="backgroundForm.invalid">
+    <mat-icon>save</mat-icon>
+    Actualizar
+  </button>
+
+  <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+</form>

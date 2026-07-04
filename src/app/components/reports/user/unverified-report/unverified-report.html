@@ -1,0 +1,21 @@
+<section class="chart-report">
+  <h2>Usuarios no verificados con antecedentes</h2>
+
+  @if (hasData) {
+    <div class="chart-wrapper">
+      <canvas
+        baseChart
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [legend]="barChartLegend"
+        [type]="barChartType">
+      </canvas>
+    </div>
+  } @else {
+    <div class="no-data">
+      <mat-icon>info_outline</mat-icon>
+      <span>No hay usuarios no verificados con antecedentes.</span>
+    </div>
+  }
+</section>

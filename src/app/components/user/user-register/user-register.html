@@ -1,0 +1,79 @@
+<h1>Registrar usuario</h1>
+
+<form #userForm="ngForm" (ngSubmit)="aceptar()">
+  <mat-form-field appearance="outline">
+    <mat-label>Nombre</mat-label>
+    <input matInput name="name" [(ngModel)]="user.name" required minlength="2" maxlength="50"
+           pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]+" #nameInput="ngModel" />
+    <mat-error>
+      @if (nameInput.hasError('required')) { Ingrese el nombre. }
+      @else if (nameInput.invalid) { Use entre 2 y 50 letras. }
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Apellido</mat-label>
+    <input matInput name="lastName" [(ngModel)]="user.lastName" required minlength="2" maxlength="50"
+           pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]+" #lastNameInput="ngModel" />
+    <mat-error>
+      @if (lastNameInput.hasError('required')) { Ingrese el apellido. }
+      @else if (lastNameInput.invalid) { Use entre 2 y 50 letras. }
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>DNI</mat-label>
+    <input matInput type="number" name="dni" [(ngModel)]="user.dni" required
+           min="10000000" max="99999999" #dniInput="ngModel" />
+    <mat-error>Ingrese un DNI de exactamente 8 dígitos.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Usuario</mat-label>
+    <input matInput name="username" [(ngModel)]="user.username" required minlength="4"
+           maxlength="20" pattern="[A-Za-z0-9_]+" #usernameInput="ngModel" />
+    <mat-error>
+      @if (usernameInput.hasError('required')) { Ingrese el usuario. }
+      @else { Use de 4 a 20 caracteres sin espacios. }
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Contraseña</mat-label>
+    <input matInput type="password" name="password" [(ngModel)]="user.password"
+           required minlength="6" maxlength="100" #passwordInput="ngModel" />
+    <mat-error>La contraseña debe tener al menos 6 caracteres.</mat-error>
+  </mat-form-field>
+
+  <!-- El usuario puede elegir unicamente uno de los dos roles publicos. -->
+  <mat-form-field appearance="outline">
+    <mat-label>Tipo de usuario</mat-label>
+    <mat-select name="role" [(ngModel)]="user.role" required #roleInput="ngModel">
+      @for (role of rolesDisponibles; track role) {
+        <mat-option [value]="role">{{ role }}</mat-option>
+      }
+    </mat-select>
+    <mat-error>Seleccione un tipo de usuario.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Foto de perfil</mat-label>
+    <input matInput type="url" name="profilePhoto" [(ngModel)]="user.profilePhoto"
+           required maxlength="1000" pattern="https?://.+" #photoInput="ngModel" />
+    <mat-error>Ingrese una URL válida que comience con http:// o https://.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Teléfono</mat-label>
+    <input matInput name="phoneNumber" [(ngModel)]="user.phoneNumber" required
+           pattern="9[0-9]{8}" maxlength="9" #phoneInput="ngModel" />
+    <mat-error>Ingrese un teléfono de 9 dígitos que comience con 9.</mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="userForm.invalid">
+    <mat-icon>save</mat-icon>
+    Guardar
+  </button>
+
+  <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+</form>

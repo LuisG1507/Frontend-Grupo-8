@@ -1,0 +1,26 @@
+<h1>Actualizar rol</h1>
+
+<form #roleForm="ngForm" (ngSubmit)="aceptar()">
+  <mat-form-field appearance="outline">
+    <mat-label>Rol</mat-label>
+    <mat-select name="rol" [(ngModel)]="role.rol" required>
+      <mat-option value="ADMIN">Administrador</mat-option>
+      <mat-option value="ARRENDATARIO">Arrendatario</mat-option>
+      <mat-option value="ARRENDADOR">Arrendador</mat-option>
+    </mat-select>
+    <mat-error>Seleccione un rol.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>ID usuario</mat-label>
+    <input matInput type="number" name="idUser" [(ngModel)]="role.idUser" required min="1" />
+    <mat-error>Ingrese un ID de usuario válido.</mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="roleForm.invalid">
+    <mat-icon>save</mat-icon>
+    Actualizar
+  </button>
+
+  <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+</form>

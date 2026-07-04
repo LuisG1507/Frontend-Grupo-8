@@ -1,0 +1,162 @@
+<section class="reports-page">
+  <header class="reports-header">
+    <div>
+      <p>Consultas del sistema</p>
+      <h1>Reportes</h1>
+    </div>
+    <mat-icon>analytics</mat-icon>
+  </header>
+
+  <div class="report-selector">
+    <mat-form-field appearance="outline">
+      <mat-label>Seleccionar reporte</mat-label>
+      <mat-select
+        [value]="selectedReport"
+        (selectionChange)="selectedReport = $event.value">
+        <mat-optgroup label="Antecedentes">
+          <mat-option value="type-frequency">
+            Frecuencia por tipo de antecedente
+          </mat-option>
+          <mat-option value="high-risk">
+            Usuarios con mayor cantidad de antecedentes
+          </mat-option>
+        </mat-optgroup>
+
+        @if (isAdmin() || isArrendatario()) {
+          <mat-optgroup label="Contratos">
+            <mat-option value="contract-expiring">
+              Contratos por vencer
+            </mat-option>
+            @if (isAdmin()) {
+              <mat-option value="contract-revenue">Ingresos por distrito</mat-option>
+            }
+            @if (isAdmin()) {
+              <mat-option value="contract-average">
+                Duración promedio por arrendador
+              </mat-option>
+            }
+          </mat-optgroup>
+        }
+
+        @if (isAdmin() || isArrendatario()) {
+          <mat-optgroup label="Inmuebles">
+            <mat-option value="estate-owners">
+              Propietarios con inmuebles amplios
+            </mat-option>
+            <mat-option value="estate-district">
+              Inmuebles por distrito
+            </mat-option>
+            <mat-option value="estate-above-average">
+              Alquileres sobre el promedio
+            </mat-option>
+            <mat-option value="estate-price-per-room">
+              Mejor precio por habitación
+            </mat-option>
+            @if (isAdmin()) {
+              <mat-option value="estate-price-range">
+                Distribución por rango de precio
+              </mat-option>
+            }
+          </mat-optgroup>
+        }
+
+        <mat-optgroup label="Reseñas">
+          <mat-option value="review-below-average">
+            Inmuebles bajo el promedio
+          </mat-option>
+          <mat-option value="review-lessors">
+            Mejores arrendadores
+          </mat-option>
+          @if (isAdmin()) {
+            <mat-option value="review-no-reviews">Inmuebles sin reseñas</mat-option>
+          }
+          @if (isAdmin()) {
+            <mat-option value="review-rating-distribution">
+              Distribución de calificaciones
+            </mat-option>
+          }
+        </mat-optgroup>
+
+        @if (isAdmin()) {
+          <mat-optgroup label="Usuarios">
+            <mat-option value="unverified">
+              Usuarios no verificados con antecedentes
+            </mat-option>
+          </mat-optgroup>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="report-content">
+    @switch (selectedReport) {
+      @case ('high-risk') {
+        <app-high-risk-report></app-high-risk-report>
+      }
+      @case ('unverified') {
+        @if (isAdmin()) {
+          <app-unverified-report></app-unverified-report>
+        }
+      }
+      @case ('contract-expiring') {
+        @if (isAdmin() || isArrendatario()) {
+          <app-contractexpiringsoon></app-contractexpiringsoon>
+        }
+      }
+      @case ('contract-revenue') {
+        @if (isAdmin()) {
+          <app-contract-revenue-by-district></app-contract-revenue-by-district>
+        }
+      }
+      @case ('contract-average') {
+        @if (isAdmin()) {
+          <app-contract-average-duration-by-lessor></app-contract-average-duration-by-lessor>
+        }
+      }
+      @case ('estate-owners') {
+        @if (isAdmin() || isArrendatario()) {
+          <app-owners-estates-report></app-owners-estates-report>
+        }
+      }
+      @case ('estate-district') {
+        @if (isAdmin() || isArrendatario()) {
+          <app-district-estates-report></app-district-estates-report>
+        }
+      }
+      @case ('estate-above-average') {
+        @if (isAdmin() || isArrendatario()) {
+          <app-above-average-rents-report></app-above-average-rents-report>
+        }
+      }
+      @case ('estate-price-per-room') {
+        @if (isAdmin() || isArrendatario()) {
+          <app-price-per-room-report></app-price-per-room-report>
+        }
+      }
+      @case ('estate-price-range') {
+        @if (isAdmin()) {
+          <app-price-range-report></app-price-range-report>
+        }
+      }
+      @case ('review-below-average') {
+        <app-reviews-below-average></app-reviews-below-average>
+      }
+      @case ('review-lessors') {
+        <app-review-lessor-rating></app-review-lessor-rating>
+      }
+      @case ('review-no-reviews') {
+        @if (isAdmin()) {
+          <app-review-no-review-estate></app-review-no-review-estate>
+        }
+      }
+      @case ('review-rating-distribution') {
+        @if (isAdmin()) {
+          <app-review-rating-distribution></app-review-rating-distribution>
+        }
+      }
+      @default {
+        <app-type-frequency-report></app-type-frequency-report>
+      }
+    }
+  </div>
+</section>

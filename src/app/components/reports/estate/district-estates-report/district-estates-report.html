@@ -1,0 +1,45 @@
+<section class="chart-report">
+  <h2>Inmuebles por distrito</h2>
+  <p>Comparación de precios mensuales de los inmuebles del distrito indicado.</p>
+
+  <div class="filter-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Distrito</mat-label>
+      <input
+        matInput
+        [value]="district"
+        (input)="district = $any($event.target).value"
+        (keyup.enter)="search()">
+    </mat-form-field>
+
+    <button
+      mat-flat-button
+      color="primary"
+      type="button"
+      [disabled]="!district.trim()"
+      (click)="search()">
+      <mat-icon>search</mat-icon>
+      Consultar
+    </button>
+  </div>
+
+  @if (hasData) {
+    <div class="chart-wrapper">
+      <canvas
+        baseChart
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [legend]="barChartLegend"
+        [type]="barChartType">
+      </canvas>
+    </div>
+  } @else {
+    <div class="no-data">
+      <mat-icon>location_on</mat-icon>
+      <span>
+        {{ hasSearched ? 'No se encontraron inmuebles en ese distrito.' : 'Ingrese un distrito para consultar.' }}
+      </span>
+    </div>
+  }
+</section>

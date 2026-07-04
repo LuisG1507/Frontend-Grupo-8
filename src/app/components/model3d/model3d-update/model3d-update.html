@@ -1,0 +1,63 @@
+<h1>Actualizar modelo 3D</h1>
+
+<form #model3dForm="ngForm" (ngSubmit)="aceptar()">
+  <!-- Elegir un archivo es opcional: sin seleccion conserva la URL existente. -->
+  <div class="file-picker">
+    <div>
+      <span class="file-label">Archivo del modelo</span>
+      <strong>{{ selectedFileName }}</strong>
+      <small>Selecciona un GLB solamente si deseas reemplazar el archivo actual.</small>
+    </div>
+    <input #fileInput type="file" accept=".glb,model/gltf-binary" (change)="onFileSelected($event)" />
+    <button mat-stroked-button type="button" (click)="fileInput.click()">
+      <mat-icon>upload_file</mat-icon>
+      Reemplazar GLB
+    </button>
+  </div>
+
+  <!-- Referencia actual, util para comprobar que archivo esta relacionado al registro. -->
+  <p class="current-url">{{ originalFileUrl || 'Cargando archivo actual...' }}</p>
+
+  <!-- Los campos siguientes actualizan el registro de PostgreSQL. -->
+  <mat-form-field appearance="outline">
+    <mat-label>Estado</mat-label>
+    <mat-select name="state" [(ngModel)]="model3d.state" required>
+      <mat-option value="ACTIVO">Activo</mat-option>
+      <mat-option value="INACTIVO">Inactivo</mat-option>
+    </mat-select>
+    <mat-error>Seleccione el estado del modelo.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Fecha de creación</mat-label>
+    <input matInput [matDatepicker]="creationPicker" name="createDate"
+           [(ngModel)]="model3d.createDate" required [max]="today" />
+    <mat-datepicker-toggle matIconSuffix [for]="creationPicker"></mat-datepicker-toggle>
+    <mat-datepicker #creationPicker></mat-datepicker>
+    <mat-error>Seleccione una fecha que no esté en el futuro.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Inmueble</mat-label>
+    <mat-select name="idEstate" [(ngModel)]="model3d.idEstate" required>
+      @for (estate of estates; track estate.idEstate) {
+        <mat-option [value]="estate.idEstate">
+          {{ estate.title }} - {{ estate.district }}
+        </mat-option>
+      }
+    </mat-select>
+    <mat-error>Seleccione el inmueble del modelo.</mat-error>
+  </mat-form-field>
+
+  <!-- saving impide enviar varias actualizaciones al mismo tiempo. -->
+  <button mat-raised-button color="primary" type="submit" [disabled]="model3dForm.invalid || saving">
+    @if (saving) {
+      <mat-spinner diameter="20"></mat-spinner>
+    } @else {
+      <mat-icon>save</mat-icon>
+    }
+    <span>{{ saving ? 'Actualizando' : 'Actualizar' }}</span>
+  </button>
+
+  <button mat-button type="button" [disabled]="saving" (click)="cancelar()">Cancelar</button>
+</form>

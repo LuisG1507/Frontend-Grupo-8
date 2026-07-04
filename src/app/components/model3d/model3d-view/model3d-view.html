@@ -1,0 +1,57 @@
+<section class="viewer-page">
+  <header class="viewer-header">
+    <div>
+      <p>Visualización 3D</p>
+      <h1>{{ model3d ? 'Modelo #' + model3d.idModels3D : 'Modelo 3D' }}</h1>
+    </div>
+    <button mat-stroked-button routerLink="/models3d/list">
+      <mat-icon>arrow_back</mat-icon>
+      Volver
+    </button>
+  </header>
+
+  <!-- Estados de la consulta al backend antes de construir el visor. -->
+  @if (loading) {
+    <div class="viewer-status">
+      <mat-spinner diameter="38"></mat-spinner>
+      <span>Cargando modelo</span>
+    </div>
+  } @else if (errorMessage) {
+    <div class="viewer-status viewer-status-error">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </div>
+  } @else if (model3d) {
+    <div class="viewer-layout">
+      <div class="viewer-stage">
+        <!-- model-viewer descarga el GLB desde fileURL y aporta controles 3D. -->
+        <model-viewer
+          [attr.src]="model3d.fileURL"
+          alt="Modelo tridimensional del inmueble"
+          camera-controls
+          auto-rotate
+          shadow-intensity="1"
+          environment-image="neutral"
+          exposure="1"
+          loading="eager"
+          (load)="onViewerLoad()"
+          (error)="onViewerError()"
+        ></model-viewer>
+
+        @if (viewerError) {
+          <div class="viewer-error">
+            <mat-icon>broken_image</mat-icon>
+            <span>{{ viewerError }}</span>
+          </div>
+        }
+      </div>
+
+      <!-- Informacion relacional del registro, separada del archivo visualizado. -->
+      <dl class="model-details">
+        <div><dt>Estado</dt><dd>{{ model3d.state }}</dd></div>
+        <div><dt>Fecha</dt><dd>{{ model3d.createDate | date: 'dd/MM/yyyy' }}</dd></div>
+        <div><dt>ID inmueble</dt><dd>{{ estateId }}</dd></div>
+      </dl>
+    </div>
+  }
+</section>

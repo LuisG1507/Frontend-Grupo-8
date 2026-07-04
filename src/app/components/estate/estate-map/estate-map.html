@@ -1,0 +1,43 @@
+<section class="map-page">
+  <header class="map-header">
+    <div>
+      <p>Google Maps API</p>
+      @if (isAdmin()) {
+        <h1>Ubicación de todos los inmuebles</h1>
+      } @else if (isArrendador()) {
+        <h1>Ubicación de mis inmuebles</h1>
+      } @else {
+        <h1>Ubicación de inmuebles</h1>
+      }
+    </div>
+    <button mat-stroked-button routerLink="/estates/list">
+      <mat-icon>arrow_back</mat-icon>
+      Volver
+    </button>
+  </header>
+
+  <div class="map-shell">
+    <!-- Google Maps dibuja el mapa dentro de este contenedor mediante ViewChild. -->
+    <div #mapCanvas class="map-canvas" aria-label="Mapa de inmuebles SmartRent"></div>
+
+    <!-- La superposicion informa si la API sigue cargando o si ocurrio un error. -->
+    @if (loading) {
+      <div class="map-overlay">
+        <mat-spinner diameter="38"></mat-spinner>
+        <span>Localizando inmuebles</span>
+      </div>
+    } @else if (errorMessage) {
+      <div class="map-overlay map-overlay-error">
+        <mat-icon>location_off</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+  </div>
+
+  <!-- Contadores calculados durante el proceso de geocodificacion. -->
+  <div class="map-summary">
+    <span><strong>{{ totalEstates }}</strong> registrados</span>
+    <span><strong>{{ locatedEstates }}</strong> ubicados</span>
+    <span><strong>{{ unlocatedEstates }}</strong> sin localizar</span>
+  </div>
+</section>

@@ -1,0 +1,45 @@
+<section class="card-list-page">
+  <header class="list-header">
+    <div>
+      <p>Resenas</p>
+      <h1>Inmuebles sin resenas</h1>
+    </div>
+  </header>
+
+  @if (inmuebles.length > 0) {
+    <mat-card class="chart-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>pie_chart</mat-icon>
+        <mat-card-title>Inmuebles sin resenas por ciudad</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="chart-container">
+          <canvas baseChart [data]="chartData" [options]="chartOptions" type="pie"></canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <div class="entity-grid">
+    @for (element of inmuebles; track element.idEstate) {
+      <mat-card class="entity-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>hide_source</mat-icon>
+          <mat-card-title>{{ element.title }}</mat-card-title>
+          <mat-card-subtitle>{{ element.city }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <dl>
+            <div><dt>Precio mensual</dt><dd>{{ element.monthlyPrice | currency }}</dd></div>
+            <div><dt>ID inmueble</dt><dd>{{ element.idEstate }}</dd></div>
+          </dl>
+        </mat-card-content>
+      </mat-card>
+    } @empty {
+      <mat-card class="empty-card">
+        <mat-icon>inbox</mat-icon>
+        <span>Todos los inmuebles tienen resenas.</span>
+      </mat-card>
+    }
+  </div>
+</section>

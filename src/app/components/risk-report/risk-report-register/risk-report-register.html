@@ -1,0 +1,61 @@
+<h1>Registrar reporte de riesgo</h1>
+
+<form #riskReportForm="ngForm" (ngSubmit)="aceptar()">
+  <mat-form-field appearance="outline">
+    <mat-label>Tipo</mat-label>
+    <input matInput name="type" [(ngModel)]="riskReport.type" required minlength="3" maxlength="50" />
+    <mat-error>El tipo debe contener entre 3 y 50 caracteres.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Fecha de creación</mat-label>
+    <input matInput [matDatepicker]="creationPicker" name="creationDate"
+           [(ngModel)]="riskReport.creationDate" required [max]="today" />
+    <mat-datepicker-toggle matIconSuffix [for]="creationPicker"></mat-datepicker-toggle>
+    <mat-datepicker #creationPicker></mat-datepicker>
+    <mat-error>Seleccione una fecha que no esté en el futuro.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Nivel de riesgo</mat-label>
+    <mat-select name="riskLevel" [(ngModel)]="riskReport.riskLevel" required>
+      <mat-option value="BAJO">Bajo</mat-option>
+      <mat-option value="MEDIO">Medio</mat-option>
+      <mat-option value="ALTO">Alto</mat-option>
+    </mat-select>
+    <mat-error>Seleccione el nivel de riesgo.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Descripción</mat-label>
+    <textarea matInput name="description" [(ngModel)]="riskReport.description"
+              required minlength="10" maxlength="500"></textarea>
+    <mat-error>La descripción debe contener entre 10 y 500 caracteres.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Detalles</mat-label>
+    <textarea matInput name="details" [(ngModel)]="riskReport.details"
+              required minlength="5" maxlength="200"></textarea>
+    <mat-error>Los detalles deben contener entre 5 y 200 caracteres.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>ID usuario</mat-label>
+    <input matInput type="number" name="idUser" [(ngModel)]="riskReport.idUser" required min="1" />
+    <mat-error>Ingrese un ID de usuario válido.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>ID inmueble</mat-label>
+    <input matInput type="number" name="idEstate" [(ngModel)]="riskReport.idEstate" required min="1" />
+    <mat-error>Ingrese un ID de inmueble válido.</mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="riskReportForm.invalid">
+    <mat-icon>save</mat-icon>
+    Guardar
+  </button>
+
+  <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+</form>

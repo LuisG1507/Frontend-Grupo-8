@@ -1,0 +1,66 @@
+<h1>Registrar modelo 3D</h1>
+
+<form #model3dForm="ngForm" (ngSubmit)="aceptar()">
+  <!-- El input nativo permanece oculto y el boton Material abre el selector de archivos. -->
+  <div class="file-picker">
+    <div>
+      <span class="file-label">Archivo del modelo</span>
+      <strong>{{ selectedFileName }}</strong>
+      <small>Formato GLB, máximo 50 MB</small>
+    </div>
+    <input #fileInput type="file" accept=".glb,model/gltf-binary" (change)="onFileSelected($event)" />
+    <button mat-stroked-button type="button" (click)="fileInput.click()">
+      <mat-icon>upload_file</mat-icon>
+      Seleccionar GLB
+    </button>
+  </div>
+
+  <!-- Datos relacionales que se enviaran al backend junto con la URL de Firebase. -->
+  <mat-form-field appearance="outline">
+    <mat-label>Estado</mat-label>
+    <mat-select name="state" [(ngModel)]="model3d.state" required>
+      <mat-option value="ACTIVO">Activo</mat-option>
+      <mat-option value="INACTIVO">Inactivo</mat-option>
+    </mat-select>
+    <mat-error>Seleccione el estado del modelo.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Fecha de creación</mat-label>
+    <input matInput [matDatepicker]="creationPicker" name="createDate"
+           [(ngModel)]="model3d.createDate" required [max]="today" />
+    <mat-datepicker-toggle matIconSuffix [for]="creationPicker"></mat-datepicker-toggle>
+    <mat-datepicker #creationPicker></mat-datepicker>
+    <mat-error>Seleccione una fecha que no esté en el futuro.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Inmueble</mat-label>
+    <mat-select name="idEstate" [(ngModel)]="model3d.idEstate" required>
+      <!-- La lista de Estate permite elegir visualmente la clave foranea. -->
+      @for (estate of estates; track estate.idEstate) {
+        <mat-option [value]="estate.idEstate">
+          {{ estate.title }} - {{ estate.district }}
+        </mat-option>
+      }
+    </mat-select>
+    <mat-error>Seleccione el inmueble del modelo.</mat-error>
+  </mat-form-field>
+
+  <!-- El formulario se bloquea mientras Firebase y Spring Boot procesan el registro. -->
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="model3dForm.invalid || !selectedFile || saving"
+  >
+    @if (saving) {
+      <mat-spinner diameter="20"></mat-spinner>
+    } @else {
+      <mat-icon>save</mat-icon>
+    }
+    <span>{{ saving ? 'Subiendo' : 'Guardar' }}</span>
+  </button>
+
+  <button mat-button type="button" [disabled]="saving" (click)="cancelar()">Cancelar</button>
+</form>

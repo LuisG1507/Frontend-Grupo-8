@@ -1,0 +1,66 @@
+<section class="card-list-page">
+  <header class="list-header">
+    <div>
+      <p>Usuarios</p>
+      <h1>Lista de usuarios</h1>
+    </div>
+    <button mat-flat-button color="primary" routerLink="/users/register">
+      <mat-icon>add</mat-icon>
+      Registrar usuario
+    </button>
+  </header>
+
+  <div class="user-search-container">
+    <span class="search-label">Buscar Usuario por DNI:</span>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
+      <mat-label>DNI del usuario</mat-label>
+      <input matInput type="text" [(ngModel)]="searchDniInput" placeholder="Ej. 12345678" (keyup.enter)="buscarPorDni()">
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" (click)="buscarPorDni()">
+      <mat-icon>search</mat-icon> Buscar
+    </button>
+    <button mat-stroked-button color="warn" (click)="limpiarDni()">
+      Limpiar
+    </button>
+  </div>
+
+  <div class="entity-grid">
+    @for (element of dataSource.connect() | async; track element.idUser) {
+      <mat-card class="entity-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>person</mat-icon>
+          <mat-card-title>{{ element.name }} {{ element.lastName }}</mat-card-title>
+          <mat-card-subtitle>{{ element.username }} · ID {{ element.idUser }}</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <dl>
+            <div><dt>DNI</dt><dd>{{ element.dni }}</dd></div>
+            <div><dt>Telefono</dt><dd>{{ element.phoneNumber }}</dd></div>
+            <div><dt>Rol</dt><dd>{{ element.role }}</dd></div>
+            <div><dt>Creado</dt><dd>{{ element.createdDate | date:'dd/MM/yyyy' }}</dd></div>
+            <div><dt>Habilitado</dt><dd>{{ element.enabled ? 'Activo':'Desactivado'}}</dd></div>
+          </dl>
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+          <button mat-icon-button color="primary" [routerLink]="['/users/edit', element.idUser]" aria-label="Editar usuario">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="eliminar(element.idUser)" aria-label="Eliminar usuario">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    } @empty {
+      <mat-card class="empty-card">
+        <mat-icon>inbox</mat-icon>
+        <span>No hay usuarios registrados.</span>
+      </mat-card>
+    }
+  </div>
+
+  <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de usuarios"></mat-paginator>
+</section>
+ 

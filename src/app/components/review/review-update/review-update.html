@@ -1,0 +1,45 @@
+<h1>Actualizar reseña</h1>
+
+<form #reviewForm="ngForm" (ngSubmit)="aceptar()">
+  <mat-form-field appearance="outline">
+    <mat-label>Calificación</mat-label>
+    <input matInput type="number" name="calification" [(ngModel)]="review.calification"
+           required min="1" max="5" step="1" />
+    <mat-error>La calificación debe estar entre 1 y 5.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Comentario</mat-label>
+    <textarea matInput name="comment" [(ngModel)]="review.comment"
+              required minlength="5" maxlength="200"></textarea>
+    <mat-error>El comentario debe contener entre 5 y 200 caracteres.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Fecha de creación</mat-label>
+    <input matInput [matDatepicker]="creationPicker" name="creationDate"
+           [(ngModel)]="review.creationDate" required [max]="today" />
+    <mat-datepicker-toggle matIconSuffix [for]="creationPicker"></mat-datepicker-toggle>
+    <mat-datepicker #creationPicker></mat-datepicker>
+    <mat-error>Seleccione una fecha que no esté en el futuro.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>ID usuario</mat-label>
+    <input matInput type="number" name="idUser" [(ngModel)]="review.idUser" required min="1" />
+    <mat-error>Ingrese un ID de usuario válido.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>ID inmueble</mat-label>
+    <input matInput type="number" name="idEstate" [(ngModel)]="review.idEstate" required min="1" />
+    <mat-error>Ingrese un ID de inmueble válido.</mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="reviewForm.invalid">
+    <mat-icon>save</mat-icon>
+    Actualizar
+  </button>
+
+  <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+</form>

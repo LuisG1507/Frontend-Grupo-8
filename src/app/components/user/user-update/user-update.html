@@ -1,0 +1,93 @@
+<h1>Actualizar usuario</h1>
+
+<form #userForm="ngForm" (ngSubmit)="aceptar()">
+  <mat-form-field appearance="outline">
+    <mat-label>Nombre</mat-label>
+    <input matInput name="name" [(ngModel)]="user.name" required minlength="2" maxlength="50"
+           pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]+" #nameInput="ngModel" />
+    <mat-error>Ingrese entre 2 y 50 letras.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Apellido</mat-label>
+    <input matInput name="lastName" [(ngModel)]="user.lastName" required minlength="2" maxlength="50"
+           pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]+" #lastNameInput="ngModel" />
+    <mat-error>Ingrese entre 2 y 50 letras.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>DNI</mat-label>
+    <input matInput type="number" name="dni" [(ngModel)]="user.dni" required
+           min="10000000" max="99999999" #dniInput="ngModel" />
+    <mat-error>Ingrese un DNI de exactamente 8 dígitos.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Usuario</mat-label>
+    <input matInput name="username" [(ngModel)]="user.username" required minlength="4"
+           maxlength="20" pattern="[A-Za-z0-9_]+" #usernameInput="ngModel" />
+    <mat-error>Use de 4 a 20 caracteres sin espacios.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Nueva contraseña</mat-label>
+    <input matInput type="password" name="password" [(ngModel)]="user.password"
+           minlength="6" maxlength="100" #passwordInput="ngModel" />
+    <mat-error>La nueva contraseña debe tener al menos 6 caracteres.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Foto de perfil</mat-label>
+    <input matInput type="url" name="profilePhoto" [(ngModel)]="user.profilePhoto"
+           required maxlength="1000" pattern="https?://.+" #photoInput="ngModel" />
+    <mat-error>Ingrese una URL válida que comience con http:// o https://.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Teléfono</mat-label>
+    <input matInput name="phoneNumber" [(ngModel)]="user.phoneNumber" required
+           pattern="9[0-9]{8}" maxlength="9" #phoneInput="ngModel" />
+    <mat-error>Ingrese un teléfono de 9 dígitos que comience con 9.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Fecha de creación</mat-label>
+    <input matInput [matDatepicker]="createdPicker" name="createdDate"
+           [(ngModel)]="user.createdDate" required [max]="today" #createdInput="ngModel" />
+    <mat-datepicker-toggle matIconSuffix [for]="createdPicker"></mat-datepicker-toggle>
+    <mat-datepicker #createdPicker></mat-datepicker>
+    <mat-error>Seleccione una fecha de creación válida.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Fecha de actualización</mat-label>
+    <input matInput [matDatepicker]="updatePicker" name="updateDate"
+           [(ngModel)]="user.updateDate" required [max]="today" #updateInput="ngModel" />
+    <mat-datepicker-toggle matIconSuffix [for]="updatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #updatePicker></mat-datepicker>
+    <mat-error>Seleccione una fecha de actualización válida.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Verificado</mat-label>
+    <mat-select name="statusVerification" [(ngModel)]="user.statusVerification" required>
+      <mat-option [value]="true">Sí</mat-option>
+      <mat-option [value]="false">No</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Habilitado</mat-label>
+    <mat-select name="enabled" [(ngModel)]="user.enabled" required>
+      <mat-option [value]="true">Sí</mat-option>
+      <mat-option [value]="false">No</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="userForm.invalid">
+    <mat-icon>save</mat-icon>
+    Actualizar
+  </button>
+
+  <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+</form>

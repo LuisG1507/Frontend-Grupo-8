@@ -1,0 +1,22 @@
+<section class="chart-report">
+  <h2>Frecuencia por tipo de antecedente</h2>
+  <p>Distribución de antecedentes registrados en la plataforma.</p>
+
+  @if (hasData) {
+    <div class="chart-wrapper">
+      <canvas
+        baseChart
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [legend]="barChartLegend"
+        [type]="barChartType">
+      </canvas>
+    </div>
+  } @else {
+    <div class="no-data">
+      <mat-icon>info_outline</mat-icon>
+      <span>No hay antecedentes para mostrar.</span>
+    </div>
+  }
+</section>

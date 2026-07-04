@@ -1,0 +1,115 @@
+:host {
+  min-height: calc(100vh - 72px);
+  display: block;
+  padding: 30px 0 44px;
+  box-sizing: border-box;
+  background:
+    linear-gradient(rgba(245, 247, 251, 0.78), rgba(245, 247, 251, 0.92)),
+    url('/tokyo-menu-background.jpg') center/cover fixed;
+}
+
+.menu-home {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.home-hero {
+  min-height: 230px;
+  padding: 32px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+  border-radius: 8px;
+  border: 1px solid #d6e7f6;
+  background: linear-gradient(120deg, rgba(16, 32, 51, 0.92), rgba(45, 127, 211, 0.84));
+  color: #ffffff;
+  box-shadow: 0 16px 36px rgba(16, 32, 51, 0.18);
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #c8f7ff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.home-hero h1 {
+  width: auto;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  line-height: 0.95;
+}
+
+.home-hero h1::after {
+  background: #7dd3fc;
+}
+
+.hero-copy {
+  max-width: 520px;
+  margin: 16px 0 0;
+  color: #e7f4ff;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.hero-actions button {
+  min-height: 42px;
+  border-radius: 8px;
+}
+
+.summary-grid {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.summary-card {
+  min-height: 112px;
+  justify-content: center;
+  border: 1px solid #d6e7f6;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 10px 24px rgba(45, 127, 211, 0.1);
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(45, 127, 211, 0.16);
+}
+
+.summary-card mat-icon[mat-card-avatar] {
+  display: grid;
+  place-items: center;
+  background: #edf6ff;
+  color: #2d7fd3;
+}
+
+@media (max-width: 840px) {
+  :host {
+    background-attachment: scroll;
+  }
+
+  .home-hero {
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 24px;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+}

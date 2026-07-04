@@ -1,0 +1,100 @@
+<h1>Registrar inmueble</h1>
+
+<form #estateForm="ngForm" (ngSubmit)="aceptar()">
+  <mat-form-field appearance="outline">
+    <mat-label>Título</mat-label>
+    <input matInput name="title" [(ngModel)]="estate.title" required minlength="3"
+           maxlength="100" #titleInput="ngModel" />
+    <mat-error>El título debe contener entre 3 y 100 caracteres.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Descripción</mat-label>
+    <textarea matInput name="description" [(ngModel)]="estate.description" required
+              minlength="10" maxlength="200" #descriptionInput="ngModel"></textarea>
+    <mat-error>La descripción debe contener entre 10 y 200 caracteres.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Dirección</mat-label>
+    <input matInput name="adress" [(ngModel)]="estate.adress" required minlength="5"
+           maxlength="200" #adressInput="ngModel" />
+    <mat-error>La dirección debe contener entre 5 y 200 caracteres.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Distrito</mat-label>
+    <input matInput name="district" [(ngModel)]="estate.district" required minlength="2"
+           maxlength="100" #districtInput="ngModel" />
+    <mat-error>El distrito debe contener entre 2 y 100 caracteres.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Ciudad</mat-label>
+    <input matInput name="city" [(ngModel)]="estate.city" required minlength="2"
+           maxlength="100" #cityInput="ngModel" />
+    <mat-error>La ciudad debe contener entre 2 y 100 caracteres.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Precio mensual</mat-label>
+    <input matInput type="number" name="monthlyPrice" [(ngModel)]="estate.monthlyPrice"
+           required min="1" max="100000" #priceInput="ngModel" />
+    <mat-error>Ingrese un precio entre 1 y 100000.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Tipo</mat-label>
+    <mat-select name="type" [(ngModel)]="estate.type" required #typeInput="ngModel">
+      <mat-option value="Casa">Casa</mat-option>
+      <mat-option value="Departamento">Departamento</mat-option>
+    </mat-select>
+    <mat-error>Seleccione el tipo de inmueble.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Estado</mat-label>
+    <mat-select name="state" [(ngModel)]="estate.state" required #stateInput="ngModel">
+      <mat-option [value]="true">Disponible</mat-option>
+      <mat-option [value]="false">No disponible</mat-option>
+    </mat-select>
+    <mat-error>Seleccione el estado del inmueble.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Habitaciones</mat-label>
+    <input matInput type="number" name="rooms" [(ngModel)]="estate.rooms"
+           required min="1" max="20" #roomsInput="ngModel" />
+    <mat-error>Ingrese entre 1 y 20 habitaciones.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Baños</mat-label>
+    <input matInput type="number" name="bathrooms" [(ngModel)]="estate.bathrooms"
+           required min="1" max="20" #bathroomsInput="ngModel" />
+    <mat-error>Ingrese entre 1 y 20 baños.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Área m2</mat-label>
+    <input matInput type="number" name="areaM2" [(ngModel)]="estate.areaM2"
+           required min="1" max="10000" #areaInput="ngModel" />
+    <mat-error>Ingrese un área entre 1 y 10000 m².</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Fecha de creación</mat-label>
+    <input matInput [matDatepicker]="creationPicker" name="creationDate"
+           [(ngModel)]="estate.creationDate" required [max]="today" #dateInput="ngModel" />
+    <mat-datepicker-toggle matIconSuffix [for]="creationPicker"></mat-datepicker-toggle>
+    <mat-datepicker #creationPicker></mat-datepicker>
+    <mat-error>Seleccione una fecha que no esté en el futuro.</mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="estateForm.invalid">
+    <mat-icon>save</mat-icon>
+    Guardar
+  </button>
+
+  <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+</form>

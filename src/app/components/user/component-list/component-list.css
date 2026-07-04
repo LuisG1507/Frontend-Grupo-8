@@ -1,0 +1,31 @@
+h1 {
+  text-align: center;
+  margin: 30px 0 20px;
+}
+
+table {
+  width: 95%;
+  margin: 0 auto 40px;
+}
+
+.user-search-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 16px 0 32px 0;
+  padding: 16px 24px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+}
+
+.search-label {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #1e293b;
+}
+
+.search-field {
+  width: 320px;
+}
