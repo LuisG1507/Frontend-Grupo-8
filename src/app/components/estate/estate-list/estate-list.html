@@ -25,47 +25,54 @@
     </div>
   </header>
 
-  <div class="entity-grid">
-    @for (element of dataSource.connect() | async; track element.idEstate) {
-      <mat-card class="entity-card">
-        <mat-card-header>
-          <mat-icon mat-card-avatar>apartment</mat-icon>
-          <mat-card-title>{{ element.title }}</mat-card-title>
-          <mat-card-subtitle>{{ element.district }}, {{ element.city }}</mat-card-subtitle>
-        </mat-card-header>
+  @if (isLoading) {
+    <div class="spinner-container">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Cargando inmuebles...</p>
+    </div>
+  } @else {
+    <div class="entity-grid">
+      @for (element of dataSource.connect() | async; track element.idEstate) {
+        <mat-card class="entity-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>apartment</mat-icon>
+            <mat-card-title>{{ element.title }}</mat-card-title>
+            <mat-card-subtitle>{{ element.district }}, {{ element.city }}</mat-card-subtitle>
+          </mat-card-header>
 
-        <mat-card-content>
-          <dl>
-            <div><dt>ID</dt><dd>{{ element.idEstate }}</dd></div>
-            <div><dt>Precio</dt><dd>{{ element.monthlyPrice }}</dd></div>
-            <div><dt>Tipo</dt><dd>{{ element.type }}</dd></div>
-            <div><dt>Estado</dt><dd>{{ element.state }}</dd></div>
-            <div><dt>ID usuario</dt><dd>{{ element.idUser?.idUser }}</dd></div>
-            @if (isArrendatario()) {
-              <div><dt>Arrendador</dt><dd>{{ element.ownerName }} {{ element.ownerLastName }}</dd></div>
-              <div><dt>Contacto</dt><dd>{{ element.ownerPhoneNumber }}</dd></div>
-            }
-          </dl>
-        </mat-card-content>
+          <mat-card-content>
+            <dl>
+              <div><dt>ID</dt><dd>{{ element.idEstate }}</dd></div>
+              <div><dt>Precio</dt><dd>{{ element.monthlyPrice }}</dd></div>
+              <div><dt>Tipo</dt><dd>{{ element.type }}</dd></div>
+              <div><dt>Estado</dt><dd>{{ element.state }}</dd></div>
+              <div><dt>ID usuario</dt><dd>{{ element.idUser?.idUser }}</dd></div>
+              @if (isArrendatario()) {
+                <div><dt>Arrendador</dt><dd>{{ element.ownerName }} {{ element.ownerLastName }}</dd></div>
+                <div><dt>Contacto</dt><dd>{{ element.ownerPhoneNumber }}</dd></div>
+              }
+            </dl>
+          </mat-card-content>
 
-        @if (isAdmin() || isArrendador()) {
-          <mat-card-actions align="end">
-            <button mat-icon-button color="primary" [routerLink]="['/estates/edit', element.idEstate]" aria-label="Editar inmueble">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="eliminar(element.idEstate)" aria-label="Eliminar inmueble">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </mat-card-actions>
-        }
-      </mat-card>
-    } @empty {
-      <mat-card class="empty-card">
-        <mat-icon>inbox</mat-icon>
-        <span>No hay inmuebles registrados.</span>
-      </mat-card>
-    }
-  </div>
+          @if (isAdmin() || isArrendador()) {
+            <mat-card-actions align="end">
+              <button mat-icon-button color="primary" [routerLink]="['/estates/edit', element.idEstate]" aria-label="Editar inmueble" [disabled]="isDeleting">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="eliminar(element.idEstate)" aria-label="Eliminar inmueble" [disabled]="isDeleting">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-card-actions>
+          }
+        </mat-card>
+      } @empty {
+        <mat-card class="empty-card">
+          <mat-icon>inbox</mat-icon>
+          <span>No hay inmuebles registrados.</span>
+        </mat-card>
+      }
+    </div>
 
-  <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de inmuebles"></mat-paginator>
+    <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de inmuebles"></mat-paginator>
+  }
 </section>

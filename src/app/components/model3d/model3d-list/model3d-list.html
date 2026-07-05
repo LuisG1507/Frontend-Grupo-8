@@ -12,57 +12,64 @@
     }
   </header>
 
-  <div class="entity-grid">
-    <!-- Cada tarjeta representa un registro Model3D recuperado desde Spring Boot. -->
-    @for (element of dataSource.connect() | async; track element.idModels3D) {
-      <mat-card class="entity-card">
-        <mat-card-header>
-          <mat-icon mat-card-avatar>view_in_ar</mat-icon>
-          <mat-card-title>Modelo #{{ element.idModels3D }}</mat-card-title>
-          <mat-card-subtitle>{{ element.state }}</mat-card-subtitle>
-        </mat-card-header>
+  @if (isLoading) {
+    <div class="spinner-container">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Cargando modelos 3D...</p>
+    </div>
+  } @else {
+    <div class="entity-grid">
+      <!-- Cada tarjeta representa un registro Model3D recuperado desde Spring Boot. -->
+      @for (element of dataSource.connect() | async; track element.idModels3D) {
+        <mat-card class="entity-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>view_in_ar</mat-icon>
+            <mat-card-title>Modelo #{{ element.idModels3D }}</mat-card-title>
+            <mat-card-subtitle>{{ element.state }}</mat-card-subtitle>
+          </mat-card-header>
 
-        <mat-card-content>
-          <p class="card-note">{{ element.fileURL }}</p>
-          <dl>
-            <div><dt>Fecha</dt><dd>{{ element.createDate | date:'dd/MM/yyyy' }}</dd></div>
-            <div><dt>ID inmueble</dt><dd>{{ element.estate?.idEstate }}</dd></div>
-          </dl>
-        </mat-card-content>
+          <mat-card-content>
+            <p class="card-note">{{ element.fileURL }}</p>
+            <dl>
+              <div><dt>Fecha</dt><dd>{{ element.createDate | date:'dd/MM/yyyy' }}</dd></div>
+              <div><dt>ID inmueble</dt><dd>{{ element.estate?.idEstate }}</dd></div>
+            </dl>
+          </mat-card-content>
 
-        <!-- Ver abre model-viewer; editar y eliminar mantienen el CRUD existente. -->
-        <mat-card-actions align="end">
-          <button
-            mat-icon-button
-            [routerLink]="['/models3d/view', element.idModels3D]"
-            aria-label="Visualizar modelo"
-          >
-            <mat-icon>visibility</mat-icon>
-          </button>
-          @if (isAdmin() || isArrendador()) {
-            <button mat-icon-button color="primary" [routerLink]="['/models3d/edit', element.idModels3D]" aria-label="Editar modelo">
-              <mat-icon>edit</mat-icon>
-            </button>
+          <!-- Ver abre model-viewer; editar y eliminar mantienen el CRUD existente. -->
+          <mat-card-actions align="end">
             <button
               mat-icon-button
-              color="warn"
-              [disabled]="deletingId === element.idModels3D"
-              (click)="eliminar(element)"
-              aria-label="Eliminar modelo"
+              [routerLink]="['/models3d/view', element.idModels3D]"
+              aria-label="Visualizar modelo"
             >
-              <mat-icon>delete</mat-icon>
+              <mat-icon>visibility</mat-icon>
             </button>
-          }
-        </mat-card-actions>
-      </mat-card>
-    } @empty {
-      <mat-card class="empty-card">
-        <mat-icon>inbox</mat-icon>
-        <span>No hay modelos registrados.</span>
-      </mat-card>
-    }
-  </div>
+            @if (isAdmin() || isArrendador()) {
+              <button mat-icon-button color="primary" [routerLink]="['/models3d/edit', element.idModels3D]" aria-label="Editar modelo">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="warn"
+                [disabled]="deletingId === element.idModels3D"
+                (click)="eliminar(element)"
+                aria-label="Eliminar modelo"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
+          </mat-card-actions>
+        </mat-card>
+      } @empty {
+        <mat-card class="empty-card">
+          <mat-icon>inbox</mat-icon>
+          <span>No hay modelos registrados.</span>
+        </mat-card>
+      }
+    </div>
 
-  <!-- El paginador controla cuantos modelos se muestran en la cuadricula. -->
-  <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de modelos"></mat-paginator>
+    <!-- El paginador controla cuantos modelos se muestran en la cuadricula. -->
+    <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de modelos"></mat-paginator>
+  }
 </section>

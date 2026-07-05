@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
@@ -13,7 +14,17 @@ import { LoginService } from '../../../services/login-service';
 
 @Component({
   selector: 'app-estate-list',
-  imports: [AsyncPipe, MatCardModule, MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatSnackBarModule, RouterLink],
+  imports: [
+    AsyncPipe,
+    MatCardModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    RouterLink,
+  ],
   templateUrl: './estate-list.html',
   styleUrl: './estate-list.css',
 })
@@ -21,7 +32,14 @@ export class EstateList implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<Estate> = new MatTableDataSource();
   displayedColumns: string[] = ['c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8', 'c9', 'c10'];
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  isLoading: boolean = false;
+  isDeleting: boolean = false;
+
+  @ViewChild(MatPaginator) set paginator(mp: MatPaginator) {
+    if (mp) {
+      this.dataSource.paginator = mp;
+    }
+  }
 
   constructor(
     private eS: Estateservice,
@@ -32,22 +50,33 @@ export class EstateList implements OnInit, AfterViewInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
     this.cargarInmuebles();
   }
 
   cargarInmuebles() {
+    this.isLoading = true;
+
     if (this.isArrendador() && !this.isAdmin()) {
-      this.eS.listMine().subscribe((data) => {
-        this.dataSource.data = data;
-        this.dataSource.paginator = this.paginator;
-        this.paginator.firstPage();
+      this.eS.listMine().subscribe({
+        next: (data) => {
+          this.dataSource.data = data;
+          this.isLoading = false;
+        },
+        error: () => {
+          this.isLoading = false;
+          this.snackBar.open('No se pudo cargar la lista de inmuebles', 'Cerrar', { duration: 3000 });
+        },
       });
     } else {
-      this.eS.list().subscribe((data) => {
-        this.dataSource.data = data;
-        this.dataSource.paginator = this.paginator;
-        this.paginator.firstPage();
+      this.eS.list().subscribe({
+        next: (data) => {
+          this.dataSource.data = data;
+          this.isLoading = false;
+        },
+        error: () => {
+          this.isLoading = false;
+          this.snackBar.open('No se pudo cargar la lista de inmuebles', 'Cerrar', { duration: 3000 });
+        },
       });
     }
   }
@@ -69,12 +98,15 @@ export class EstateList implements OnInit, AfterViewInit {
       return;
     }
 
+    this.isDeleting = true;
     this.eS.delete(id).subscribe({
       next: () => {
+        this.isDeleting = false;
         this.snackBar.open('Inmueble eliminado correctamente', 'Cerrar', { duration: 3000 });
         this.cargarInmuebles();
       },
       error: (error) => {
+        this.isDeleting = false;
         const message =
           typeof error?.error === 'string' && error.error.trim()
             ? error.error

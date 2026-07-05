@@ -10,40 +10,47 @@
     </button>
   </header>
 
-  <div class="entity-grid">
-    @for (element of dataSource.connect() | async; track element.idRiskReport) {
-      <mat-card class="entity-card">
-        <mat-card-header>
-          <mat-icon mat-card-avatar>report</mat-icon>
-          <mat-card-title>{{ element.type }}</mat-card-title>
-          <mat-card-subtitle>Nivel {{ element.riskLevel }}</mat-card-subtitle>
-        </mat-card-header>
+  @if (isLoading) {
+    <div class="spinner-container">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Cargando reportes...</p>
+    </div>
+  } @else {
+    <div class="entity-grid">
+      @for (element of dataSource.connect() | async; track element.idRiskReport) {
+        <mat-card class="entity-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>report</mat-icon>
+            <mat-card-title>{{ element.type }}</mat-card-title>
+            <mat-card-subtitle>Nivel {{ element.riskLevel }}</mat-card-subtitle>
+          </mat-card-header>
 
-        <mat-card-content>
-          <p class="card-note">{{ element.description }}</p>
-          <dl>
-            <div><dt>ID</dt><dd>{{ element.idRiskReport }}</dd></div>
-            <div><dt>Fecha</dt><dd>{{ element.creationDate | date:'dd/MM/yyyy' }}</dd></div>
-            <div><dt>ID usuario</dt><dd>{{ element.idUser?.idUser ?? element.idUser  }}</dd></div>
-          </dl>
-        </mat-card-content>
+          <mat-card-content>
+            <p class="card-note">{{ element.description }}</p>
+            <dl>
+              <div><dt>ID</dt><dd>{{ element.idRiskReport }}</dd></div>
+              <div><dt>Fecha</dt><dd>{{ element.creationDate | date:'dd/MM/yyyy' }}</dd></div>
+              <div><dt>ID usuario</dt><dd>{{ element.idUser?.idUser ?? element.idUser  }}</dd></div>
+            </dl>
+          </mat-card-content>
 
-        <mat-card-actions align="end">
-          <button mat-icon-button color="primary" [routerLink]="['/risk-reports/edit', element.idRiskReport]" aria-label="Editar reporte">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="eliminar(element.idRiskReport)" aria-label="Eliminar reporte">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    } @empty {
-      <mat-card class="empty-card">
-        <mat-icon>inbox</mat-icon>
-        <span>No hay reportes registrados.</span>
-      </mat-card>
-    }
-  </div>
+          <mat-card-actions align="end">
+            <button mat-icon-button color="primary" [routerLink]="['/risk-reports/edit', element.idRiskReport]" aria-label="Editar reporte" [disabled]="isDeleting">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="eliminar(element.idRiskReport)" aria-label="Eliminar reporte" [disabled]="isDeleting">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      } @empty {
+        <mat-card class="empty-card">
+          <mat-icon>inbox</mat-icon>
+          <span>No hay reportes registrados.</span>
+        </mat-card>
+      }
+    </div>
 
-  <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de reportes"></mat-paginator>
+    <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de reportes"></mat-paginator>
+  }
 </section>
