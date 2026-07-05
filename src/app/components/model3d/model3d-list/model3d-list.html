@@ -12,21 +12,29 @@
     }
   </header>
 
-  @if (isLoading) {
-    <div class="spinner-container">
-      <mat-spinner diameter="48"></mat-spinner>
-      <p>Cargando modelos 3D...</p>
-    </div>
-  } @else {
-    <div class="entity-grid">
-      <!-- Cada tarjeta representa un registro Model3D recuperado desde Spring Boot. -->
-      @for (element of dataSource.connect() | async; track element.idModels3D) {
-        <mat-card class="entity-card">
-          <mat-card-header>
-            <mat-icon mat-card-avatar>view_in_ar</mat-icon>
-            <mat-card-title>Modelo #{{ element.idModels3D }}</mat-card-title>
-            <mat-card-subtitle>{{ element.state }}</mat-card-subtitle>
-          </mat-card-header>
+  <div class="model-search-container">
+    <span class="search-label">Buscar por ID inmueble:</span>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
+      <mat-label>Ej. 12</mat-label>
+      <input matInput type="text" [(ngModel)]="searchEstateIdInput" placeholder="Ej. 12" (keyup.enter)="buscarPorEstateId()">
+    </mat-form-field>
+    
+    <button mat-flat-button color="primary" (click)="buscarPorEstateId()">
+      <mat-icon>search</mat-icon> Buscar
+    </button>
+    <button mat-stroked-button color="warn" (click)="limpiarFiltro()">
+      Limpiar
+    </button>
+  </div>
+
+  <div class="entity-grid">
+    @for (element of dataSource.connect() | async; track element.idModels3D) {
+      <mat-card class="entity-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>view_in_ar</mat-icon>
+          <mat-card-title>Modelo #{{ element.idModels3D }}</mat-card-title>
+          <mat-card-subtitle>{{ element.state }}</mat-card-subtitle>
+        </mat-card-header>
 
           <mat-card-content>
             <p class="card-note">{{ element.fileURL }}</p>
@@ -36,8 +44,18 @@
             </dl>
           </mat-card-content>
 
-          <!-- Ver abre model-viewer; editar y eliminar mantienen el CRUD existente. -->
-          <mat-card-actions align="end">
+        <mat-card-actions align="end">
+          <button
+            mat-icon-button
+            [routerLink]="['/models3d/view', element.idModels3D]"
+            aria-label="Visualizar modelo"
+          >
+            <mat-icon>visibility</mat-icon>
+          </button>
+          @if (isAdmin() || isArrendador()) {
+            <button mat-icon-button color="primary" [routerLink]="['/models3d/edit', element.idModels3D]" aria-label="Editar modelo">
+              <mat-icon>edit</mat-icon>
+            </button>
             <button
               mat-icon-button
               [routerLink]="['/models3d/view', element.idModels3D]"
@@ -69,7 +87,5 @@
       }
     </div>
 
-    <!-- El paginador controla cuantos modelos se muestran en la cuadricula. -->
-    <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de modelos"></mat-paginator>
-  }
+  <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de modelos"></mat-paginator>
 </section>

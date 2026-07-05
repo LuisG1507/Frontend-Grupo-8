@@ -8,5 +8,4 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './estate.css',
 })
 export class Estate {
-
 }

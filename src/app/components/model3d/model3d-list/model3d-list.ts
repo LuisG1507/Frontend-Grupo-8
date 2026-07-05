@@ -14,25 +14,20 @@ import { FirebaseStorageService } from '../../../services/firebase-storage.servi
 import { LoginService } from '../../../services/login-service';
 import { Model3dservice } from '../../../services/model3dservice';
 
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 @Component({
   selector: 'app-model3d-list',
-  imports: [
-    AsyncPipe,
-    MatCardModule,
-    MatTableModule,
-    MatPaginatorModule,
-    DatePipe,
-    MatButtonModule,
-    MatIconModule,
-    MatSnackBarModule,
-    MatProgressSpinnerModule,
-    RouterLink,
-  ],
+  imports: [AsyncPipe, MatCardModule, MatTableModule, MatPaginatorModule, DatePipe, MatButtonModule, MatIconModule, MatSnackBarModule, RouterLink, FormsModule, MatFormFieldModule, MatInputModule],
   templateUrl: './model3d-list.html',
   styleUrl: './model3d-list.css',
 })
 export class Model3dList implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<Model3d> = new MatTableDataSource();
+  allModels: Model3d[] = [];
+  searchEstateIdInput: string = '';
   displayedColumns: string[] = ['c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7'];
   deletingId: number | null = null;
 
@@ -58,21 +53,18 @@ export class Model3dList implements OnInit, AfterViewInit {
     this.cargarModelos();
   }
 
-  /** El arrendador consulta sus modelos; los otros roles consultan la lista general. */
   cargarModelos() {
     this.isLoading = true;
 
     const consulta = this.isArrendador() && !this.isAdmin() ? this.mS.listMine() : this.mS.list();
 
-    consulta.subscribe({
-      next: (data) => {
-        this.dataSource.data = data;
-        this.isLoading = false;
-      },
-      error: () => {
-        this.isLoading = false;
-        this.snackBar.open('No se pudo cargar la lista de modelos 3D', 'Cerrar', { duration: 3000 });
-      },
+    consulta.subscribe((data) => {
+      this.allModels = data;
+      this.dataSource.data = data;
+      if (this.paginator) {
+        this.dataSource.paginator = this.paginator;
+        this.paginator.firstPage();
+      }
     });
   }
 
@@ -84,7 +76,31 @@ export class Model3dList implements OnInit, AfterViewInit {
     return this.loginService.tieneRol('ARRENDADOR');
   }
 
-  /** Elimina primero el GLB remoto y luego su registro relacional. */
+  buscarPorEstateId(): void {
+    if (!this.searchEstateIdInput.trim()) {
+      this.cargarModelos();
+      return;
+    }
+    const termino = Number(this.searchEstateIdInput.trim());
+    if (isNaN(termino)) {
+      this.snackBar.open('Por favor ingresa un número válido', 'Cerrar', { duration: 3000 });
+      return;
+    }
+    const filtrados = this.allModels.filter(m => m.estate?.idEstate === termino);
+    this.dataSource.data = filtrados;
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+    if (filtrados.length === 0) {
+      this.snackBar.open('No hay modelos con ese ID de inmueble', 'Cerrar', { duration: 3000 });
+    }
+  }
+
+  limpiarFiltro(): void {
+    this.searchEstateIdInput = '';
+    this.cargarModelos();
+  }
+
   async eliminar(model: Model3d): Promise<void> {
     if (!window.confirm(`¿Eliminar el modelo #${model.idModels3D}?`)) {
       return;
