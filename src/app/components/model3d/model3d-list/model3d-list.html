@@ -63,11 +63,11 @@
             >
               <mat-icon>visibility</mat-icon>
             </button>
-            @if (isAdmin() || isArrendador()) {
+           
               <button mat-icon-button color="primary" [routerLink]="['/models3d/edit', element.idModels3D]" aria-label="Editar modelo">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button
+               <button
                 mat-icon-button
                 color="warn"
                 [disabled]="deletingId === element.idModels3D"
