@@ -1,13 +1,26 @@
 <section class="card-list-page">
   <header class="list-header">
-    <div>
+    <div class=" titulo">
       <p>Antecedentes</p>
       <h1>Lista de antecedentes</h1>
     </div>
+
+   
+ <div class="contenedor-busqueda">
+      <form class="busqueda">
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Buscar antecedente...</mat-label>
+          <input matInput (keyup)="filtrar($event)" placeholder="Ex. Daños">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </form>
+    </div>
+    
     <button mat-flat-button color="primary" routerLink="/backgrounds/register">
       <mat-icon>add</mat-icon>
       Registrar antecedente
     </button>
+
   </header>
 
   @if (isLoading) {

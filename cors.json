@@ -1,0 +1,8 @@
+[
+  {
+    "origin": ["https://smartrent-frontend-396930085922.us-central1.run.app", "http://localhost:4200", "https://frontend-grupo-8.onrender.com"],
+    "method": ["GET", "HEAD"],
+    "maxAgeSeconds": 3600,
+     "responseHeader": ["Content-Type", "Content-Length", "Range", "Content-Range"]
+  }
+]

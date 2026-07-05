@@ -1,8 +1,34 @@
-.spinner-container {
+/* Aseguramos que la cabecera no tenga fondos raros ni sombras */
+.list-header {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 48px 0;
+  flex-wrap: wrap;           
+  align-items: center;       
+  justify-content: space-between; 
+  gap: 16px;                 
+  margin-bottom: 24px;       
+  background: transparent !important; /* quita cualquier fondo blanco */
+  box-shadow: none !important;        /* quita cualquier sombra del cuadro exterior */
+  padding: 0 !important;              /* quita paddings que ensanchen el cuadro */
+}
+
+/* El título arriba ocupando todo el ancho */
+.titulo {
+  flex: 0 0 100%;            
+  margin-bottom: 16px;        
+}
+
+.contenedor-busqueda{
+    justify-content: center;
+}
+
+/* Asegura que el buscador de Material use todo el ancho de su contenedor */
+.busqueda {
+  width: 90%;
+  max-width: 700px;           /* que no se haga infinito en pantallas grandes */
+  margin: 0;
+  height: 50px;
+}
+
+.busqueda .example-full-width {
+  width: 210%;      
 }
