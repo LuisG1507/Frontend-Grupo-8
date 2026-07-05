@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  base: 'https://backend-grupo-8-tgl2.onrender.com',
+  base: 'https://smartrent-backend-396930085922.us-central1.run.app',
   googleMapsApiKey: 'AIzaSyCTaPa4LcirpBl6GDUYedg1i1eo-DanKBo',
   firebase: {
     apiKey: 'AIzaSyDOJISgAGSZF5xAiLLqt8flRiiZ7LnrX9E',

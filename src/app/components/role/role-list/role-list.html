@@ -10,37 +10,42 @@
     </button>
   </header>
 
-  <div class="entity-grid">
-    @for (element of dataSource.connect() | async; track element.id) {
-      <mat-card class="entity-card">
-        <mat-card-header>
-          <mat-icon mat-card-avatar>admin_panel_settings</mat-icon>
-          <mat-card-title>{{ element.rol }}</mat-card-title>
-          <mat-card-subtitle>Rol #{{ element.id }}</mat-card-subtitle>
-        </mat-card-header>
+  @if (isLoading) {
+    <div class="spinner-container">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Cargando roles...</p>
+    </div>
+  } @else {
+    <div class="entity-grid">
+      @for (element of dataSource.connect() | async; track element.id) {
+        <mat-card class="entity-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>admin_panel_settings</mat-icon>
+            <mat-card-title>{{ element.rol }}</mat-card-title>
+            <mat-card-subtitle>Rol #{{ element.id }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <dl>
+              <div><dt>ID usuario</dt><dd>{{ element.idUser }}</dd></div>
+            </dl>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-icon-button color="primary" [routerLink]="['/roles/edit', element.id]" aria-label="Editar rol" [disabled]="isDeleting">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="eliminar(element.id)" aria-label="Eliminar rol" [disabled]="isDeleting">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      } @empty {
+        <mat-card class="empty-card">
+          <mat-icon>inbox</mat-icon>
+          <span>No hay roles registrados.</span>
+        </mat-card>
+      }
+    </div>
 
-        <mat-card-content>
-          <dl>
-            <div><dt>ID usuario</dt><dd>{{ element.idUser }}</dd></div>
-          </dl>
-        </mat-card-content>
-
-        <mat-card-actions align="end">
-          <button mat-icon-button color="primary" [routerLink]="['/roles/edit', element.id]" aria-label="Editar rol">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="eliminar(element.id)" aria-label="Eliminar rol">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    } @empty {
-      <mat-card class="empty-card">
-        <mat-icon>inbox</mat-icon>
-        <span>No hay roles registrados.</span>
-      </mat-card>
-    }
-  </div>
-
-  <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de roles"></mat-paginator>
+    <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de roles"></mat-paginator>
+  }
 </section>

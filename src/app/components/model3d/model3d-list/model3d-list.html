@@ -36,13 +36,13 @@
           <mat-card-subtitle>{{ element.state }}</mat-card-subtitle>
         </mat-card-header>
 
-        <mat-card-content>
-          <p class="card-note">{{ element.fileURL }}</p>
-          <dl>
-            <div><dt>Fecha</dt><dd>{{ element.createDate | date:'dd/MM/yyyy' }}</dd></div>
-            <div><dt>ID inmueble</dt><dd>{{ element.estate?.idEstate }}</dd></div>
-          </dl>
-        </mat-card-content>
+          <mat-card-content>
+            <p class="card-note">{{ element.fileURL }}</p>
+            <dl>
+              <div><dt>Fecha</dt><dd>{{ element.createDate | date:'dd/MM/yyyy' }}</dd></div>
+              <div><dt>ID inmueble</dt><dd>{{ element.estate?.idEstate }}</dd></div>
+            </dl>
+          </mat-card-content>
 
         <mat-card-actions align="end">
           <button
@@ -58,23 +58,34 @@
             </button>
             <button
               mat-icon-button
-              color="warn"
-              [disabled]="deletingId === element.idModels3D"
-              (click)="eliminar(element)"
-              aria-label="Eliminar modelo"
+              [routerLink]="['/models3d/view', element.idModels3D]"
+              aria-label="Visualizar modelo"
             >
-              <mat-icon>delete</mat-icon>
+              <mat-icon>visibility</mat-icon>
             </button>
-          }
-        </mat-card-actions>
-      </mat-card>
-    } @empty {
-      <mat-card class="empty-card">
-        <mat-icon>inbox</mat-icon>
-        <span>No hay modelos registrados.</span>
-      </mat-card>
-    }
-  </div>
+            @if (isAdmin() || isArrendador()) {
+              <button mat-icon-button color="primary" [routerLink]="['/models3d/edit', element.idModels3D]" aria-label="Editar modelo">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="warn"
+                [disabled]="deletingId === element.idModels3D"
+                (click)="eliminar(element)"
+                aria-label="Eliminar modelo"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
+          </mat-card-actions>
+        </mat-card>
+      } @empty {
+        <mat-card class="empty-card">
+          <mat-icon>inbox</mat-icon>
+          <span>No hay modelos registrados.</span>
+        </mat-card>
+      }
+    </div>
 
   <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de modelos"></mat-paginator>
 </section>

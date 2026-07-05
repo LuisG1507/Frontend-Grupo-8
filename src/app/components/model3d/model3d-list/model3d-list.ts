@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
@@ -30,27 +31,32 @@ export class Model3dList implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7'];
   deletingId: number | null = null;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  isLoading: boolean = false;
+
+  @ViewChild(MatPaginator) set paginator(mp: MatPaginator) {
+    if (mp) {
+      this.dataSource.paginator = mp;
+    }
+  }
 
   constructor(
     private mS: Model3dservice,
     private storageService: FirebaseStorageService,
     private snackBar: MatSnackBar,
-    private loginService: LoginService,
+    private loginService: LoginService
   ) {}
 
   ngOnInit(): void {}
 
-  /** Conecta el paginador y solicita los modelos cuando la vista ya esta lista. */
+  /** Solicita los modelos cuando la vista ya esta lista. */
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
     this.cargarModelos();
   }
 
   cargarModelos() {
-    const consulta = this.isArrendador() && !this.isAdmin()
-      ? this.mS.listMine()
-      : this.mS.list();
+    this.isLoading = true;
+
+    const consulta = this.isArrendador() && !this.isAdmin() ? this.mS.listMine() : this.mS.list();
 
     consulta.subscribe((data) => {
       this.allModels = data;

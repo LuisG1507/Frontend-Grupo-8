@@ -1,9 +1,10 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
@@ -20,37 +21,32 @@ import { MatInputModule } from '@angular/material/input';
   templateUrl: './component-list.html',
   styleUrl: './component-list.css',
 })
-export class ComponentList implements OnInit, AfterViewInit {
+export class ComponentList implements OnInit {
   dataSource: MatTableDataSource<User> = new MatTableDataSource();
   allUsers: User[] = [];
   searchDniInput: string = '';
   displayedColumns: string[] = [
-    'c0',
-    'c1',
-    'c2',
-    'c3',
-    'c4',
-    'c5',
-    'c6',
-    'c7',
-    'c8',
-    'c9',
-    'c10',
-    'c11',
-    'c12',
+    'c0', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8', 'c9', 'c10', 'c11', 'c12',
   ];
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  isLoading: boolean = false;
+  isDeleting: boolean = false;
+
+  // Setter: se ejecuta cada vez que el mat-paginator aparece en el DOM
+  // (incluso si @if lo destruye y lo vuelve a crear), asegurando que
+  // siempre quede correctamente enlazado al dataSource.
+  @ViewChild(MatPaginator) set paginator(mp: MatPaginator) {
+    if (mp) {
+      this.dataSource.paginator = mp;
+    }
+  }
 
   constructor(
     private uS: Userservice,
     private snackBar: MatSnackBar
   ) {}
 
-  ngOnInit(): void {}
-
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
+  ngOnInit(): void {
     this.cargarUsuarios();
   }
 
@@ -87,9 +83,17 @@ export class ComponentList implements OnInit, AfterViewInit {
   }
 
   eliminar(id: number) {
-    this.uS.delete(id).subscribe(() => {
-      this.snackBar.open('Usuario eliminado correctamente', 'Cerrar', { duration: 3000 });
-      this.cargarUsuarios();
+    this.isDeleting = true;
+    this.uS.delete(id).subscribe({
+      next: () => {
+        this.isDeleting = false;
+        this.snackBar.open('Usuario eliminado correctamente', 'Cerrar', { duration: 3000 });
+        this.cargarUsuarios();
+      },
+      error: () => {
+        this.isDeleting = false;
+        this.snackBar.open('No se pudo eliminar el usuario', 'Cerrar', { duration: 3000 });
+      },
     });
   }
 }

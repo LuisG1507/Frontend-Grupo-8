@@ -59,11 +59,12 @@ export class EstateList implements OnInit, AfterViewInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
     this.cargarInmuebles();
   }
 
   cargarInmuebles() {
+    this.isLoading = true;
+
     if (this.isArrendador() && !this.isAdmin()) {
       this.eS.listMine().subscribe((data) => {
         this.allEstates = data;
@@ -165,10 +166,12 @@ export class EstateList implements OnInit, AfterViewInit {
     }
     this.eS.delete(id).subscribe({
       next: () => {
+        this.isDeleting = false;
         this.snackBar.open('Inmueble eliminado correctamente', 'Cerrar', { duration: 3000 });
         this.cargarInmuebles();
       },
       error: (error) => {
+        this.isDeleting = false;
         const message =
           typeof error?.error === 'string' && error.error.trim()
             ? error.error

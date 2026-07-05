@@ -13,42 +13,49 @@
     }
   </header>
 
-  <div class="entity-grid">
-    @for (element of dataSource.connect() | async; track element.idReview) {
-      <mat-card class="entity-card">
-        <mat-card-header>
-          <mat-icon mat-card-avatar>star</mat-icon>
-          <mat-card-title>Calificacion {{ element.calification }}</mat-card-title>
-          <mat-card-subtitle>Resena #{{ element.idReview }}</mat-card-subtitle>
-        </mat-card-header>
+  @if (isLoading) {
+    <div class="spinner-container">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Cargando resenas...</p>
+    </div>
+  } @else {
+    <div class="entity-grid">
+      @for (element of dataSource.connect() | async; track element.idReview) {
+        <mat-card class="entity-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>star</mat-icon>
+            <mat-card-title>Calificacion {{ element.calification }}</mat-card-title>
+            <mat-card-subtitle>Resena #{{ element.idReview }}</mat-card-subtitle>
+          </mat-card-header>
 
-        <mat-card-content>
-          <p class="card-note">{{ element.comment }}</p>
-          <dl>
-            <div><dt>Fecha</dt><dd>{{ element.creationDate | date:'dd/MM/yyyy' }}</dd></div>
-            <div><dt>ID usuario</dt><dd>{{ element.idUser }}</dd></div>
-            <div><dt>ID inmueble</dt><dd>{{ element.idEstate }}</dd></div>
-          </dl>
-        </mat-card-content>
+          <mat-card-content>
+            <p class="card-note">{{ element.comment }}</p>
+            <dl>
+              <div><dt>Fecha</dt><dd>{{ element.creationDate | date:'dd/MM/yyyy' }}</dd></div>
+              <div><dt>ID usuario</dt><dd>{{ element.idUser }}</dd></div>
+              <div><dt>ID inmueble</dt><dd>{{ element.idEstate }}</dd></div>
+            </dl>
+          </mat-card-content>
 
-        <mat-card-actions align="end">
-          @if (isAdmin()) {
-            <button mat-icon-button color="primary" [routerLink]="['/reviews/edit', element.idReview]" aria-label="Editar resena">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="eliminar(element.idReview)" aria-label="Eliminar resena">
-              <mat-icon>delete</mat-icon>
-            </button>
-          }
-        </mat-card-actions>
-      </mat-card>
-    } @empty {
-      <mat-card class="empty-card">
-        <mat-icon>inbox</mat-icon>
-        <span>No hay resenas registradas.</span>
-      </mat-card>
-    }
-  </div>
+          <mat-card-actions align="end">
+            @if (isAdmin()) {
+              <button mat-icon-button color="primary" [routerLink]="['/reviews/edit', element.idReview]" aria-label="Editar resena" [disabled]="isDeleting">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="eliminar(element.idReview)" aria-label="Eliminar resena" [disabled]="isDeleting">
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
+          </mat-card-actions>
+        </mat-card>
+      } @empty {
+        <mat-card class="empty-card">
+          <mat-icon>inbox</mat-icon>
+          <span>No hay resenas registradas.</span>
+        </mat-card>
+      }
+    </div>
 
-  <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de resenas"></mat-paginator>
+    <mat-paginator [pageSize]="8" [pageSizeOptions]="[8]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de resenas"></mat-paginator>
+  }
 </section>

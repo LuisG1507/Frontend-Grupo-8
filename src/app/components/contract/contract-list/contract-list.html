@@ -4,48 +4,52 @@
       <p>Contratos</p>
       <h1>Lista de contratos</h1>
     </div>
-
     <button mat-flat-button color="primary" routerLink="/contracts/register">
       <mat-icon>add</mat-icon>
       Registrar contrato
     </button>
   </header>
 
-  <div class="entity-grid">
-    @for (element of dataSource.connect() | async; track element.idContract) {
-      <mat-card class="entity-card">
-        <mat-card-header>
-          <mat-icon mat-card-avatar>description</mat-icon>
-          <mat-card-title>Contrato #{{ element.idContract }}</mat-card-title>
-          <mat-card-subtitle>{{ element.startDate | date:'dd/MM/yyyy HH:mm' }}</mat-card-subtitle>
-        </mat-card-header>
+  @if (isLoading) {
+    <div class="spinner-container">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Cargando contratos...</p>
+    </div>
+  } @else {
+    <div class="entity-grid">
+      @for (element of dataSource.connect() | async; track element.idContract) {
+        <mat-card class="entity-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>description</mat-icon>
+            <mat-card-title>Contrato #{{ element.idContract }}</mat-card-title>
+            <mat-card-subtitle>{{ element.startDate | date:'dd/MM/yyyy HH:mm' }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <dl>
+              <div><dt>Fin</dt><dd>{{ element.endDate | date:'dd/MM/yyyy HH:mm' }}</dd></div>
+              <div><dt>Monto</dt><dd>{{ element.monthlyAmount }}</dd></div>
+              <div><dt>Estado</dt><dd>{{ element.status }}</dd></div>
+              <div><dt>ID inmueble</dt><dd>{{ element.idEstate }}</dd></div>
+              <div><dt>ID arrendador</dt><dd>{{ element.idLessor }}</dd></div>
+            </dl>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-icon-button color="primary" [routerLink]="['/contracts/edit', element.idContract]" aria-label="Editar contrato" [disabled]="isDeleting">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="eliminar(element.idContract)" aria-label="Eliminar contrato" [disabled]="isDeleting">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      } @empty {
+        <mat-card class="empty-card">
+          <mat-icon>inbox</mat-icon>
+          <span>No hay contratos registrados.</span>
+        </mat-card>
+      }
+    </div>
 
-        <mat-card-content>
-          <dl>
-            <div><dt>Fin</dt><dd>{{ element.endDate | date:'dd/MM/yyyy HH:mm' }}</dd></div>
-            <div><dt>Monto</dt><dd>{{ element.monthlyAmount }}</dd></div>
-            <div><dt>Estado</dt><dd>{{ element.status }}</dd></div>
-            <div><dt>ID inmueble</dt><dd>{{ element.idEstate }}</dd></div>
-            <div><dt>ID arrendador</dt><dd>{{ element.idLessor }}</dd></div>
-          </dl>
-        </mat-card-content>
-
-        <mat-card-actions align="end">
-          <button mat-icon-button color="primary" [routerLink]="['/contracts/edit', element.idContract]" aria-label="Editar contrato">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="eliminar(element.idContract)" aria-label="Eliminar contrato">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    } @empty {
-      <mat-card class="empty-card">
-        <mat-icon>inbox</mat-icon>
-        <span>No hay contratos registrados.</span>
-      </mat-card>
-    }
-  </div>
-
-  <mat-paginator [pageSize]="5" [pageSizeOptions]="[5]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de contratos"></mat-paginator>
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5]" hidePageSize showFirstLastButtons aria-label="Seleccionar pagina de contratos"></mat-paginator>
+  }
 </section>
