@@ -16,7 +16,7 @@ import { DataSource } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-background-list',
-  imports: [AsyncPipe, MatCardModule, MatTableModule, MatPaginatorModule, DatePipe, MatButtonModule, MatIconModule, MatSnackBarModule, RouterLink, MatInputModule, MatFormFieldModule],
+  imports: [MatProgressSpinnerModule, AsyncPipe, MatCardModule, MatTableModule, MatPaginatorModule, DatePipe, MatButtonModule, MatIconModule, MatSnackBarModule, RouterLink, MatInputModule, MatFormFieldModule],
   templateUrl: './background-list.html',
   styleUrl: './background-list.css',
 })

@@ -14,6 +14,7 @@ import { RouterLink } from '@angular/router';
 import { Estate } from '../../../models/Estate';
 import { Estateservice } from '../../../services/estateservice';
 import { LoginService } from '../../../services/login-service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-estate-list',
@@ -30,6 +31,7 @@ import { LoginService } from '../../../services/login-service';
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './estate-list.html',
   styleUrl: './estate-list.css',
@@ -47,6 +49,9 @@ export class EstateList implements OnInit, AfterViewInit {
   distritos: string[] = [];
   ciudades: string[] = [];
   tipos: string[] = [];
+
+  isLoading: boolean = false;
+  isDeleting: boolean = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
