@@ -5,7 +5,7 @@ service firebase.storage {
     // Acceso temporal del prototipo. Expira antes de integrar autenticacion.
     match /models3d/{fileName} {
       allow read: if request.time < timestamp.date(2026, 7, 5);
-      allow create, update: if request.time < timestamp.date(2026, 7, 5)
+      allow create, update: if request.time < timestamp.date(2026, 7, 20)
         && fileName.matches('.*\\.glb')
         && request.resource.size < 50 * 1024 * 1024
         && request.resource.contentType == 'model/gltf-binary';
